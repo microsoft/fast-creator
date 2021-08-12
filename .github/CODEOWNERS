@@ -2,7 +2,7 @@
 
 # Lines starting with '#' are comments.
 # Each line is a file pattern followed by one or more *code owners*.
-# The last matching pattern has the most precendence.
+# The last matching pattern has the most precedence.
 
 # These *code owners* will be the default owners for everything in the repository.
 * @janechu @williamw2 @nicholasrice @EisenbergEffect
