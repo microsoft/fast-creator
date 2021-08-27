@@ -49,8 +49,8 @@ The root level file `package.json` file contains a `scripts` section that define
 
 ### Submitting a pull request
 
-If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from main or use the *merge* button provided by GitHub.
-When submitting your pull request please make the title clear and concise, provide a description of the change, and specify any issues that will be closed.
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from `main` or use the *merge* button provided by GitHub.
+When submitting your pull request please make the title clear and concise, provide a description of the change, and specify the issue that will be closed.
 
 ### Recommended Settings for Visual Studio Code
 
@@ -93,6 +93,8 @@ All pull requests must be approved by at least one *code owner* before the pull 
 Before a pull request is accepted, time should be given to receive input from *collaborators* and/or *code owners* with the expertise to evaluate the changes. The amount of time can vary but at least 3 days during the typical working week and 5 days over weekends should be given to account for international time differences and work schedules.
 
 Specific *collaborators* or *code owners*  can be added to a pull request by including their user alias.
+
+All work that is done should correspond to a milestone, for more information on process and planning check out the [process document](./PROCESS.md).
 
 ## Stability policy
 
