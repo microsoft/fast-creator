@@ -18,6 +18,7 @@ Follow setup instructions in (https://github.com/Microsoft/fast-creator/blob/mai
 ## Testing
 - Run all tests: `npm test`
 - eslint all files: `npm run eslint`
+- Code format all files: `npm run prettier`
 
 ## Troubleshooting
 - The application uses service-workers, which means views might not update as expected during the development process. To ensure files are updated when changed, you can configure your developer tools to update the assets on reload: (https://stackoverflow.com/questions/40783790/disable-service-workers-when-in-development-mode).
