@@ -103,7 +103,7 @@ html::-webkit-scrollbar-thumb {
 }
 
 .canvas-content.canvas-content__dev-tools-hidden, .canvas-content.canvas-content__preview {
-    grid-template-rows: auto 72px;
+    grid-template-rows: calc(100vh - 40px);
 }
 
 .canvas-content .tab-panel_region {
