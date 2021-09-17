@@ -1,12 +1,11 @@
-import Preview from "./preview";
-
 import { DesignSystem } from "@microsoft/fast-foundation";
-import { fastToolingPreview } from "./web-components/preview/";
 import {
     fastToolingHTMLRender,
     fastToolingHTMLRenderLayerInlineEdit,
     fastToolingHTMLRenderLayerNavigation,
 } from "@microsoft/fast-tooling";
+import { fastToolingPreview } from "./web-components/preview/";
+
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */

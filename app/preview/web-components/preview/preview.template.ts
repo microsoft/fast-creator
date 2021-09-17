@@ -12,9 +12,9 @@ export const previewTemplate: (
             className=${x =>
                 classNames("preview", [
                     "previewMode",
-                    x.state.displayMode === DisplayMode.preview,
+                    x.displayMode === DisplayMode.preview,
                 ])}
-            dir=${x => x.getDirection()}
+            dir=${x => x.direction}
         >
             <fast-tooling-html-render ${ref("renderRef")}>
                 <fast-tooling-html-render-layer-navigation

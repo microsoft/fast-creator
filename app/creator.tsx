@@ -474,7 +474,6 @@ class Creator extends Editor<{}, CreatorState> {
             ) {
                 this.handleLibraryAdded(e.data.data.id);
             } else if (e.data.value && e.data.value === previewReady) {
-                console.log("creator recieved previewReady");
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.dataDictionary,

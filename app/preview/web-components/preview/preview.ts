@@ -1,3 +1,4 @@
+import { observable } from "@microsoft/fast-element";
 import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     DataDictionary,
@@ -14,6 +15,9 @@ import {
     UpdateDataMessageIncoming,
 } from "@microsoft/fast-tooling";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
+import { HTMLRender } from "@microsoft/fast-tooling/dist/dts/web-components/html-render/html-render";
+import { Direction } from "@microsoft/fast-web-utilities";
 import {
     fastComponentDefinitions,
     fluentUIComponentDefinitions,
@@ -31,22 +35,15 @@ import {
 import { mapFluentUIComponentsDesignSystem } from "../../../configs/fluent-ui/library.fluent-ui.design-system.mapping";
 import { elementLibraries } from "../../../configs";
 import { WebComponentLibraryDefinition } from "../../../configs/typings";
-import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
-import { HTMLRender } from "@microsoft/fast-tooling/dist/dts/web-components/html-render/html-render";
 import { previewReady } from "../../constants";
-import { Direction } from "@microsoft/fast-web-utilities";
-
-export interface PreviewState {
-    activeDictionaryId: string;
-    dataDictionary: DataDictionary<unknown> | void;
-    schemaDictionary: SchemaDictionary;
-    designSystemDataDictionary: DataDictionary<unknown> | void;
-    htmlRenderMessageSystem: MessageSystem;
-    htmlRenderReady: boolean;
-    displayMode: DisplayMode;
-}
 
 export class Preview extends FoundationElement {
+    @observable
+    public displayMode: DisplayMode;
+
+    @observable
+    public direction: Direction;
+
     /**
      * A reference to the internal input element
      * @internal
@@ -54,24 +51,27 @@ export class Preview extends FoundationElement {
     public renderRef: HTMLRender;
 
     private htmlRenderMessageSystemWorker = new FASTMessageSystemWorker();
-    public state: PreviewState;
+    private activeDictionaryId: string;
+    private dataDictionary: DataDictionary<unknown> | void;
+    private schemaDictionary: SchemaDictionary;
+    private designSystemDataDictionary: DataDictionary<unknown> | void;
+    private htmlRenderMessageSystem: MessageSystem;
+    private htmlRenderReady: boolean;
 
     constructor() {
         super();
-        console.log("constructor");
-        this.state = {
-            activeDictionaryId: "",
-            dataDictionary: void 0,
-            schemaDictionary: {},
-            designSystemDataDictionary: void 0,
-            htmlRenderMessageSystem: new MessageSystem({
-                webWorker: this.htmlRenderMessageSystemWorker,
-            }),
-            htmlRenderReady: false,
-            displayMode: DisplayMode.interactive,
-        };
+        this.direction = Direction.ltr;
+        this.activeDictionaryId = "";
+        this.dataDictionary = void 0;
+        this.schemaDictionary = {};
+        this.designSystemDataDictionary = void 0;
+        this.htmlRenderMessageSystem = new MessageSystem({
+            webWorker: this.htmlRenderMessageSystemWorker,
+        });
+        this.htmlRenderReady = false;
+        this.displayMode = DisplayMode.interactive;
 
-        this.state.htmlRenderMessageSystem.add({
+        this.htmlRenderMessageSystem.add({
             onMessage: this.handleHtmlMessageSystem,
         });
 
@@ -90,69 +90,61 @@ export class Preview extends FoundationElement {
         );
     }
 
-    public getDirection() {
-        let directionValue: Direction = Direction.ltr;
-        if (this.state.dataDictionary !== undefined) {
-            directionValue =
-                this.state.designSystemDataDictionary &&
-                (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
-                    .data as any) &&
-                (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
-                    .data as any)["direction"]
-                    ? (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
-                          .data as any)["direction"]
-                    : Direction.ltr;
-        }
-        return directionValue;
-    }
-
     /**
      * Sets up the DOM with quick exit cases
      * if another request is performed.
      */
     private attachMappedComponents(): void {
-        console.log("attachMappedComponents");
-        if (this.renderRef !== null && !this.state.htmlRenderReady) {
-            (this.renderRef as any).messageSystem = this.state.htmlRenderMessageSystem;
+        if (this.renderRef !== null && !this.htmlRenderReady) {
+            (this.renderRef as any).messageSystem = this.htmlRenderMessageSystem;
             (this.renderRef as any).markupDefinitions = {
                 ...fastComponentDefinitions,
                 ...fluentUIComponentDefinitions,
                 ...nativeElementDefinitions,
             };
-            this.state.htmlRenderReady = true;
+            this.htmlRenderReady = true;
         }
 
-        if (this.state.dataDictionary !== undefined && this.renderRef !== null) {
+        if (this.dataDictionary !== undefined && this.renderRef !== null) {
             if (
-                this.state.designSystemDataDictionary &&
-                (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
-                    .data as any)
+                this.designSystemDataDictionary &&
+                (this.designSystemDataDictionary[0][designTokensLinkedDataId].data as any)
             ) {
                 // TODO: investigate the use of multiple design systems
                 // or determine how to register namespaced design tokens
                 mapFluentUIComponentsDesignSystem(
                     document.body,
-                    this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                    this.designSystemDataDictionary[0][designTokensLinkedDataId]
                         .data as any
                 );
             }
+
+            // Update the direction
+            this.direction =
+                this.designSystemDataDictionary &&
+                (this.designSystemDataDictionary[0][designTokensLinkedDataId]
+                    .data as any) &&
+                (this.designSystemDataDictionary[0][designTokensLinkedDataId]
+                    .data as any)["direction"]
+                    ? (this.designSystemDataDictionary[0][designTokensLinkedDataId]
+                          .data as any)["direction"]
+                    : Direction.ltr;
         }
     }
 
     private attachComponentsAndInit(): void {
-        console.log("attachComponentsAndInit");
         this.attachMappedComponents();
-        if (this.state.dataDictionary !== undefined) {
-            this.state.htmlRenderMessageSystem.postMessage({
+        if (this.dataDictionary !== undefined) {
+            this.htmlRenderMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
-                dataDictionary: this.state.dataDictionary,
-                schemaDictionary: this.state.schemaDictionary,
+                dataDictionary: this.dataDictionary,
+                schemaDictionary: this.schemaDictionary,
             });
-            if (this.state.activeDictionaryId) {
-                this.state.htmlRenderMessageSystem.postMessage({
+            if (this.activeDictionaryId) {
+                this.htmlRenderMessageSystem.postMessage({
                     type: MessageSystemType.navigation,
                     action: MessageSystemNavigationTypeAction.update,
-                    activeDictionaryId: this.state.activeDictionaryId,
+                    activeDictionaryId: this.activeDictionaryId,
                     options: {
                         originatorId: "preview",
                     },
@@ -163,12 +155,11 @@ export class Preview extends FoundationElement {
     }
 
     private handleNavigation(): void {
-        console.log("handleNavigation");
         if (this.renderRef !== null) {
-            this.state.htmlRenderMessageSystem.postMessage({
+            this.htmlRenderMessageSystem.postMessage({
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
-                activeDictionaryId: this.state.activeDictionaryId,
+                activeDictionaryId: this.activeDictionaryId,
                 options: {
                     originatorId: "preview",
                 },
@@ -178,7 +169,6 @@ export class Preview extends FoundationElement {
     }
 
     private updateDOM(messageData: MessageSystemOutgoing): void {
-        console.log("updateDOM", messageData);
         switch (messageData.type) {
             case MessageSystemType.initialize:
             case MessageSystemType.custom:
@@ -207,7 +197,6 @@ export class Preview extends FoundationElement {
             } catch (e) {
                 return;
             }
-            console.log("handleMessage", messageData);
             if (
                 messageData !== undefined &&
                 (!(messageData as any).options ||
@@ -215,30 +204,24 @@ export class Preview extends FoundationElement {
             ) {
                 switch ((messageData as MessageSystemOutgoing).type) {
                     case MessageSystemType.initialize:
-                        this.state.dataDictionary = (messageData as InitializeMessageOutgoing).dataDictionary;
-                        this.state.schemaDictionary = (messageData as InitializeMessageOutgoing).schemaDictionary;
-                        this.state.activeDictionaryId = (messageData as InitializeMessageOutgoing).activeDictionaryId;
+                        this.dataDictionary = (messageData as InitializeMessageOutgoing).dataDictionary;
+                        this.schemaDictionary = (messageData as InitializeMessageOutgoing).schemaDictionary;
+                        this.activeDictionaryId = (messageData as InitializeMessageOutgoing).activeDictionaryId;
                         this.updateDOM(messageData as MessageSystemOutgoing);
                         break;
                     case MessageSystemType.data: {
-                        const dictionaryId: Partial<PreviewState> =
+                        const dictionaryId: string | undefined =
                             typeof (messageData as RemoveLinkedDataDataMessageOutgoing)
                                 .activeDictionaryId === "string"
-                                ? {
-                                      activeDictionaryId: (messageData as RemoveLinkedDataDataMessageOutgoing)
-                                          .activeDictionaryId,
-                                  }
+                                ? (messageData as RemoveLinkedDataDataMessageOutgoing)
+                                      .activeDictionaryId
                                 : typeof (messageData as UpdateDataMessageIncoming)
                                       .dictionaryId === "string"
-                                ? {
-                                      activeDictionaryId: (messageData as UpdateDataMessageIncoming)
-                                          .dictionaryId,
-                                  }
-                                : {};
-                        this.state.dataDictionary = (messageData as DataMessageOutgoing).dataDictionary;
-                        if (dictionaryId.activeDictionaryId) {
-                            this.state.activeDictionaryId =
-                                dictionaryId.activeDictionaryId;
+                                ? (messageData as UpdateDataMessageIncoming).dictionaryId
+                                : undefined;
+                        this.dataDictionary = (messageData as DataMessageOutgoing).dataDictionary;
+                        if (dictionaryId) {
+                            this.activeDictionaryId = dictionaryId;
                         }
                         this.updateDOM(messageData as MessageSystemOutgoing);
                         break;
@@ -249,25 +232,25 @@ export class Preview extends FoundationElement {
                             ((messageData as any).options as any).originatorId !==
                                 htmlRenderOriginatorId
                         )
-                            this.state.activeDictionaryId = (messageData as NavigationMessageOutgoing).activeDictionaryId;
+                            this.activeDictionaryId = (messageData as NavigationMessageOutgoing).activeDictionaryId;
                         this.updateDOM(messageData as MessageSystemOutgoing);
                         break;
                     case MessageSystemType.schemaDictionary:
-                        this.state.schemaDictionary = (messageData as any).schemaDictionary;
+                        this.schemaDictionary = (messageData as any).schemaDictionary;
                         break;
                     case MessageSystemType.custom:
                         if (
                             (messageData as any).originatorId === designTokensLinkedDataId
                         ) {
                             const updatedDesignSystemDataDictionary: DataDictionary<unknown> =
-                                this.state.designSystemDataDictionary &&
-                                (this.state.designSystemDataDictionary[0][
+                                this.designSystemDataDictionary &&
+                                (this.designSystemDataDictionary[0][
                                     designTokensLinkedDataId
                                 ].data as any)
                                     ? [
                                           {
                                               [designTokensLinkedDataId]: {
-                                                  schemaId: this.state
+                                                  schemaId: this
                                                       .designSystemDataDictionary[0][
                                                       designTokensLinkedDataId
                                                   ].schemaId,
@@ -290,7 +273,7 @@ export class Preview extends FoundationElement {
                                           designTokensLinkedDataId,
                                       ];
 
-                            this.state.designSystemDataDictionary = updatedDesignSystemDataDictionary;
+                            this.designSystemDataDictionary = updatedDesignSystemDataDictionary;
                             this.updateDOM(messageData as MessageSystemOutgoing);
                         } else if (
                             (messageData as any).data &&
@@ -332,8 +315,8 @@ export class Preview extends FoundationElement {
                                     action[1] === "preview"
                                         ? DisplayMode.preview
                                         : DisplayMode.interactive;
-                                this.state.displayMode = mode;
-                                this.state.htmlRenderMessageSystem.postMessage({
+                                this.displayMode = mode;
+                                this.htmlRenderMessageSystem.postMessage({
                                     type: MessageSystemType.custom,
                                     options: {
                                         originatorId: creatorOriginatorId,
@@ -352,7 +335,6 @@ export class Preview extends FoundationElement {
     };
 
     private handleHtmlMessageSystem = (message: MessageEvent): void => {
-        console.log("handleHtmlMessageSystem", message);
         if (message.data) {
             if (
                 message.data.type === MessageSystemType.navigation &&
@@ -360,7 +342,7 @@ export class Preview extends FoundationElement {
                 message.data.options &&
                 message.data.options.originatorId === htmlRenderOriginatorId
             ) {
-                (this.state.activeDictionaryId = message.data.activeDictionaryId),
+                (this.activeDictionaryId = message.data.activeDictionaryId),
                     window.postMessage(
                         {
                             type: MessageSystemType.custom,
