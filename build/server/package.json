@@ -1,5 +1,5 @@
 {
-  "name": "@microsoft/fast-creator-site",
+  "name": "@microsoft/fast-creator-sites",
   "version": "1.0.0",
   "description": "Required to install NPM packages on Azure running Node/Express.",
   "repository": {
