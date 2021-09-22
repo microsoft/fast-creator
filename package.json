@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-creator",
   "version": "0.7.0",
-  "description": "Creator app for composing UIs and general UI development",
+  "description": "Creator app for composing and developing user interfaces and experiences.",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "https://github.com/microsoft/fast-creator.git"
   },
   "author": "Microsoft",
   "license": "MIT",
