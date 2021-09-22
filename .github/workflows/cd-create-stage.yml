@@ -21,12 +21,12 @@ jobs:
 
     - name: Build & Prepare Web Application
       run: |
-        npm i
+        npm i --legacy-peer-deps
         cp build/server/package.json build/server/server.js www 
         cd www
         npm i
         ls -lta
-        
+
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
