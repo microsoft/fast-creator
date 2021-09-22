@@ -17,7 +17,9 @@ jobs:
     
     steps:
     - name: Checkout Branch
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
+      with:
+        ref: release
 
     - name: Build & Prepare Web Application
       run: |
