@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-creator",
   "version": "0.7.0",
-  "description": "Creator app for composing and developing user interfaces and experiences.",
+  "description": "An application for designers and developers to create web experiences.",
   "sideEffects": false,
   "private": true,
   "scripts": {
