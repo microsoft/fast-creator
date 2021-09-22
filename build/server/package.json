@@ -4,7 +4,7 @@
   "description": "Required to install NPM packages on Azure running Node/Express.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/microsoft/fast-creator.git"
+    "url": "git+https://github.com/microsoft/fast-creator.git"
   },
   "author": "Microsoft",
   "license": "MIT",
