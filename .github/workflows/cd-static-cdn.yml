@@ -3,7 +3,6 @@ name: CD - Static CDN
 on:
   push:
     branches:
-    - main
     - release
 
 jobs:
