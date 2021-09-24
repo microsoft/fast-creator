@@ -1,4 +1,4 @@
-import { fluentUIComponentExtendedSchemas } from "../../site-utilities";
+import { fluentUIComponentExtendedSchemas, fluentUIComponentDefinitions } from "../../site-utilities";
 import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
@@ -46,8 +46,9 @@ import {
     fluentTextAreaTag,
     fluentTextFieldTag,
 } from "./library.fluent-ui.tags";
-export const fluentUIComponentId = "fluent-ui-components";
+import { VSCodeNativeHTMLDefinition, VSCodeNativeHTMLTag } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
 
+export const fluentUIComponentId = "fluent-ui-components";
 export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
     id: fluentUIComponentId,
     displayName: "Fluent UI Components",
@@ -57,6 +58,12 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
     },
     register: async () => {
         (await import("./library.fluent-ui.registry")).registerFluentUIComponents();
+    },
+    customData: {
+        version: 1.1,
+        tags: Object.values(fluentUIComponentDefinitions as {[key: string]: VSCodeNativeHTMLDefinition}).reduce((tags: VSCodeNativeHTMLTag[], componentDefinition: VSCodeNativeHTMLDefinition) => {
+            return tags.concat(componentDefinition.tags);
+        }, [])
     },
     componentDictionary: {
         ...Object.values(fluentUIComponentExtendedSchemas as { [key: string]: any })

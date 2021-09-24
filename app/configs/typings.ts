@@ -37,7 +37,7 @@ export interface NativeElementLibraryDefinition {
     /**
      * The components definitions for the 1.1 version of the vscode custom data format
      */
-    customData: VSCodeNativeHTMLDefinition;
+    customData?: VSCodeNativeHTMLDefinition;
 
     /**
      * The display name for the component library
