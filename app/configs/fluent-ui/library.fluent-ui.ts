@@ -1,5 +1,11 @@
-import { VSCodeNativeHTMLDefinition, VSCodeNativeHTMLTag } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
-import { fluentUIComponentDefinitions, fluentUIComponentExtendedSchemas } from "../../site-utilities";
+import {
+    VSCodeNativeHTMLDefinition,
+    VSCodeNativeHTMLTag,
+} from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
+import {
+    fluentUIComponentDefinitions,
+    fluentUIComponentExtendedSchemas,
+} from "../../site-utilities";
 import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
@@ -61,9 +67,17 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
     },
     customData: {
         version: 1.1,
-        tags: Object.values(fluentUIComponentDefinitions as {[key: string]: VSCodeNativeHTMLDefinition}).reduce((tags: VSCodeNativeHTMLTag[], componentDefinition: VSCodeNativeHTMLDefinition) => {
-            return tags.concat(componentDefinition.tags);
-        }, [])
+        tags: Object.values(
+            fluentUIComponentDefinitions as { [key: string]: VSCodeNativeHTMLDefinition }
+        ).reduce(
+            (
+                tags: VSCodeNativeHTMLTag[],
+                componentDefinition: VSCodeNativeHTMLDefinition
+            ) => {
+                return tags.concat(componentDefinition.tags);
+            },
+            []
+        ),
     },
     componentDictionary: {
         ...Object.values(fluentUIComponentExtendedSchemas as { [key: string]: any })
