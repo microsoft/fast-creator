@@ -1,4 +1,5 @@
 import { Data } from "@microsoft/fast-tooling";
+import { VSCodeNativeHTMLDefinition } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
 
 export interface WebComponentDefinition {
     /**
@@ -32,6 +33,11 @@ export interface NativeElementLibraryDefinition {
      * The dictionary of components in this component library
      */
     componentDictionary: { [key: string]: WebComponentDefinition };
+
+    /**
+     * The components definitions for the 1.1 version of the vscode custom data format
+     */
+    customData: VSCodeNativeHTMLDefinition;
 
     /**
      * The display name for the component library

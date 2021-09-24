@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
+import { VSCodeNativeHTMLDefinition } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
 import {
     AjvMapper,
     CustomMessage,
@@ -122,6 +123,17 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             );
         });
     };
+
+    public updateMonacoEditorHTMLElementDefinitions = (monacoRef: any, componentDefinitions: VSCodeNativeHTMLDefinition): void => {
+        monacoRef.languages.html.htmlDefaults.setOptions({
+            data: {
+                useDefaultDataProvider: false,
+                dataProviders: [
+                    componentDefinitions
+                ]
+            }
+        });
+    }
 
     public createMonacoEditor = (
         monacoRef: any,
