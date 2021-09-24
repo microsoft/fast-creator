@@ -1,4 +1,5 @@
-import { fluentUIComponentExtendedSchemas, fluentUIComponentDefinitions } from "../../site-utilities";
+import { VSCodeNativeHTMLDefinition, VSCodeNativeHTMLTag } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
+import { fluentUIComponentDefinitions, fluentUIComponentExtendedSchemas } from "../../site-utilities";
 import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
@@ -46,7 +47,6 @@ import {
     fluentTextAreaTag,
     fluentTextFieldTag,
 } from "./library.fluent-ui.tags";
-import { VSCodeNativeHTMLDefinition, VSCodeNativeHTMLTag } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
 
 export const fluentUIComponentId = "fluent-ui-components";
 export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
