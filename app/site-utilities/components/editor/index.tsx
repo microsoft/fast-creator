@@ -126,12 +126,12 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
 
     public updateMonacoEditorHTMLElementDefinitions = (
         monacoRef: any,
-        componentDefinitions: VSCodeNativeHTMLDefinition
+        componentDefinitions: VSCodeNativeHTMLDefinition[]
     ): void => {
         monacoRef.languages.html.htmlDefaults.setOptions({
             data: {
                 useDefaultDataProvider: false,
-                dataProviders: [componentDefinitions],
+                dataProviders: componentDefinitions,
             },
         });
     };
