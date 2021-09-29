@@ -24,7 +24,7 @@ jobs:
     - name: Build & Prepare Web Application
       run: |
         npm ci
-        cp build/server/package.json build/server/package-lock.json build/server/server.js www 
+        cp build/server/package.json build/server/server.js www 
         cd www
         npm ci
         ls -lta
