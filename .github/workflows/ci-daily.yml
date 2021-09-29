@@ -28,7 +28,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install Dependencies
-      run: npm ci
+      run: npm install --legacy-peer-deps
+
+    - name: Testing Prettier format
+      run: npm run prettier:diff
 
     - name: Test
       run: npm run test

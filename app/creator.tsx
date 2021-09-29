@@ -422,8 +422,8 @@ class Creator extends Editor<{}, CreatorState> {
                 this.updateMonacoEditorHTMLElementDefinitions(
                     monaco,
                     this.state.addedLibraries.map((id: string) => {
-                        return elementLibraries[id].customData;
-                    })
+                        return elementLibraries[id].customData
+                    }),
                 );
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.schemaDictionary,
