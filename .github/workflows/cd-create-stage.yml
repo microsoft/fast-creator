@@ -23,10 +23,10 @@ jobs:
 
     - name: Build & Prepare Web Application
       run: |
-        npm i --legacy-peer-deps
+        npm ci
         cp build/server/package.json build/server/server.js www 
         cd www
-        npm i
+        npm ci
         ls -lta
 
     - name: 'Deploy to Active Azure Region'
