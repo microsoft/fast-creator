@@ -29,10 +29,10 @@ git clone git@github.com:microsoft/fast-creator.git
 
 ### Installing and building
 
-From within the `fast-creator` folder where you've cloned the repo, install all package dependencies with this command:
+From within the `fast-creator` folder where you've cloned the repo, install all package dependencies from the `package-lock.json` with this command:
 
 ```bash
-npm install
+npm ci
 ```
 
 ### Testing
