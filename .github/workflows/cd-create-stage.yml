@@ -23,6 +23,8 @@ jobs:
 
     - name: Build & Prepare Web Application
       run: |
+        npm ci
+        npm run build
         cp build/server/* www
         cd www
         npm ci
