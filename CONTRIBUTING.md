@@ -47,6 +47,23 @@ npm run test
 The root level file `package.json` file contains a `scripts` section that defines the commands available to you for common tasks such as build, test, lint, etc.
 :::
 
+### Symlinking to Fast-tooling
+
+To use the npm link feature to work simultaneously in @microsoft/fast-tooling and Creator execute the following commands:
+
+In the Fast-Tooling Repo execute this command in both the /packages/fast-tooling and /packages/fast-tooling-react folders:
+```bash
+npm link
+```
+
+Then in the root folder of the Fast-Creator repo execute the following commands:
+```bash
+npm link @microsoft/fast-tooling
+npm link @micorosft/fast-tooling-react
+```
+
+Creator will now use your local copy of Fast-Tooling and any changes made and built in Fast-Tooling should automatically be used by Creator.
+
 ### Submitting a pull request
 
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from `main` or use the *merge* button provided by GitHub.
