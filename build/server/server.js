@@ -19,28 +19,26 @@ app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
 
 // Manage CSP Policy for Creator Application only
-if (process.env.WEBSITE_HOSTNAME.indexOf("create") > -1) {
-    app.use(
-        helmet.contentSecurityPolicy({
-            directives: {
-                defaultSrc: ["'self'"],
-                fontSrc: [
-                    "'self' static2.sharepointonline.com use.typekit.net static.fast.design c.s-microsoft.com",
-                ],
-                frameAncestors: [`'self' ${process.env.FRAME_ANCESTOR_PARTNER}`],
-                imgSrc: ["'self' blob: data: *.fast.design via.placeholder.com"],
-                scriptSrc: ["'self' 'unsafe-eval'"],
-                styleSrc: ["'self' https: 'unsafe-inline'"],
-            },
-        })
-    );
-}
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            fontSrc: [
+                "'self' static2.sharepointonline.com use.typekit.net static.fast.design c.s-microsoft.com",
+            ],
+            frameAncestors: [`'self' ${process.env.FRAME_ANCESTOR_PARTNER}`],
+            imgSrc: ["'self' blob: data: *.fast.design via.placeholder.com"],
+            scriptSrc: ["'self' 'unsafe-eval'"],
+            styleSrc: ["'self' https: 'unsafe-inline'"],
+        },
+    })
+);
 
 // Set public directory
 var publicDir = path.resolve(__dirname);
 
 // Set static application options
-app.use("/", express.static(publicDir, { maxAge: "0d" }));
+app.use("/", express.static(publicDir));
 
 // Set fallback application options
 app.use(fallback("index.html", { root: publicDir }));

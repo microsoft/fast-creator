@@ -1,4 +1,8 @@
-import { fastComponentSchemas } from "../../site-utilities";
+import {
+    VSCodeNativeHTMLDefinition,
+    VSCodeNativeHTMLTag,
+} from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
+import { fastComponentDefinitions, fastComponentSchemas } from "../../site-utilities";
 import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fastAnchorExample,
@@ -48,8 +52,8 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
-export const fastComponentId = "fast-components";
 
+export const fastComponentId = "fast-components";
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
     id: fastComponentId,
     displayName: "FAST Components",
@@ -59,6 +63,20 @@ export const fastComponentLibrary: WebComponentLibraryDefinition = {
     },
     register: async () => {
         (await import("./library.fast.registry")).registerFASTComponents();
+    },
+    customData: {
+        version: 1.1,
+        tags: Object.values(
+            fastComponentDefinitions as { [key: string]: VSCodeNativeHTMLDefinition }
+        ).reduce(
+            (
+                tags: VSCodeNativeHTMLTag[],
+                componentDefinition: VSCodeNativeHTMLDefinition
+            ) => {
+                return tags.concat(componentDefinition.tags);
+            },
+            []
+        ),
     },
     componentDictionary: {
         ...Object.values(fastComponentSchemas as { [key: string]: any })

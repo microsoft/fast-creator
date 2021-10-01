@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-creator",
   "version": "0.7.0",
-  "description": "Creator app for composing UIs and general UI development",
+  "description": "An application for designers and developers to create web experiences.",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -10,13 +10,13 @@
     "prettier": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ./.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
-    "test": "npm run eslint && npm run build",
+    "test": "npm run eslint && npm run prettier:diff && npm run build",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/microsoft/fast-creator.git"
   },
   "author": "Microsoft",
   "license": "MIT",
@@ -78,7 +78,7 @@
     "@microsoft/fast-foundation": "^2.14.0",
     "@microsoft/fast-tooling": "^0.29.0",
     "@microsoft/fast-tooling-react": "^2.11.4",
-    "monaco-editor": "^0.21.2",
-    "monaco-editor-webpack-plugin": "^1.9.0"
+    "monaco-editor": "^0.28.1",
+    "monaco-editor-webpack-plugin": "^4.2.0"
   }
 }
