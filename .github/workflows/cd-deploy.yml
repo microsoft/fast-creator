@@ -1,4 +1,4 @@
-name: CD - FAST Creator
+name: CD - Deployer
 
 on:
   push:
@@ -6,8 +6,12 @@ on:
     - release
 
 jobs:
-  build_deploy_linux:
+  build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
 
     env:
       AZURE_WEBAPP_ACTIVE_STAGE_NAME: create-west-app
@@ -16,12 +20,28 @@ jobs:
       AZURE_WEBAPP_SLOT_NAME: stage
     
     steps:
-    - name: Checkout Branch
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         ref: release
+    
+    - name: Cache multiple paths
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
 
-    - name: Build & Prepare Web Application
+    - name: Use Node version ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build & prepare web application
       run: |
         npm ci
         npm run build
