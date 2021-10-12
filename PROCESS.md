@@ -7,7 +7,6 @@ This document outlines the release process for the Creator application. It detai
 - Jane Chu (@janechu)
 - William Wagner (@williamw2)
 - Rob Eisenberg (@EisenbergEffect)
-- Jason Reynolds
 - Brian Heston (@bheston)
 - Jason Falk
 - Aaron Wentzel (@awentzel)
@@ -17,7 +16,7 @@ This document outlines the release process for the Creator application. It detai
 - Jason Falk and Rob Eisenberg as product managers will determine priority.
 - Anyone in the participants list can suggest a new idea.
 - Anyone suggesting a new idea must be involved in the requirements gathering for the issue(s) generated from that idea.
-- @janechu or @williamw2 will handle issue creation from the idea, see [planning a feature](#planning-a-feature) section below.
+- @janechu or @williamw2 will handle issue creation from the idea, see [planning a feature](#planning-a-feature) section below, as well as conducting user testing.
 
 ## Planning cadence
 
@@ -26,6 +25,7 @@ There are two main planning cadences, a short term weekly planning cadence (simi
 ## Planning a release
 
 - A new release should start being planned approximately 2 weeks before the end of the previous release, check the estimated amount of time remaining during the weekly planning meetings.
+- User testing will be planned at the beginning of the release.
 - A milestone will be created in the fast-creator repository and a milestone with the same name will be created in the fast-tooling repository.
     - The name of the milestone should be a simple number, such as "Release 1".
     - The release description in the fast-creator repository should include the release version e.g. "alpha".
@@ -35,6 +35,7 @@ There are two main planning cadences, a short term weekly planning cadence (simi
     - This should result in a publish to production.
     - The changelog for new releases should be generated via beachball.
         - This may at some point become part of the app, similar to how other apps have a notification with "what's new in this version" pop up.
+- The milestone for the release is closed.
 
 ## Planning a feature
 
@@ -75,7 +76,11 @@ Feature planning includes converting `idea` issues into issues, gathering requir
         - Ensure any updates are made to workflows that may be affected.
         - Ensure unit testing covers all possible cases that can be tested in the Mocha/Chai test environment and all other tests are done using the integration tests as part or a subset of a workflow test.
 
+### User testing
+
+During a release 2 users will be consulted for user testing. This will come in the form of 2 separate meetings in which the user will be prompted with a task and recorded during the session. The video will then be posted to this [channel](https://msit.microsoftstream.com/channel/ca8b0840-98dc-948e-a12d-f1ec27b5c313) and sent to product managers for review. The bugs and features resulting from the user testing will be filed as issues in either FAST Creator or FAST Tooling by @janechu. The next release milestone will be created at this time to place bugs and/or features into.
+
 ### Communication and Demo-worthiness
 
 - Have a set of workflows that are expected to work at any time for demos to leadership, these should ideally be E2E tested as user critical path workflows and part of the build gate.
-- Should a workflow necessarily change due to updates to the Creator/tooling, all members of the tooling team as well as Jason should be made aware of the change.
+- Should a workflow necessarily change due to updates to the Creator/tooling, all members of the tooling team as well as Jason Falk should be made aware of the change.
