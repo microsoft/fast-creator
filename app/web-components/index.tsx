@@ -369,6 +369,7 @@ export function renderNavigationTabs(
                     types={[DataType.object]}
                     defaultLinkedDataDroppableDataLocation={"Slot"}
                     droppableBlocklist={voidElements}
+                    scrollIntoView={true}
                 />
             </fast-tab-panel>
             <fast-tab-panel id={NavigationId.libraries + "Panel"}>

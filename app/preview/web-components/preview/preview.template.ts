@@ -16,7 +16,7 @@ export const previewTemplate: (
                 ])}
             dir=${x => x.direction}
         >
-            <fast-tooling-html-render ${ref("renderRef")}>
+            <fast-tooling-html-render ${ref("renderRef")} scroll-into-view>
                 <fast-tooling-html-render-layer-navigation
                     role="htmlrenderlayer"
                     resizeobserverselector="#root .preview"
