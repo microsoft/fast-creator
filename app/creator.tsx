@@ -48,7 +48,10 @@ import {
 } from "@microsoft/fast-components";
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
-import { findMonacoEditorHTMLPositionByDictionaryId } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
+import {
+    findDictionaryIdByMonacoEditorHTMLPosition,
+    findMonacoEditorHTMLPositionByDictionaryId,
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
 import {
     CreatorState,
     ExternalInitializingData,
@@ -546,14 +549,23 @@ class Creator extends Editor<{}, CreatorState> {
                     activeDictionaryId: e.data.dictionaryId || e.data.activeDictionaryId,
                 },
                 () => {
-                    const position = findMonacoEditorHTMLPositionByDictionaryId(
-                        e.data.dictionaryId || e.data.activeDictionaryId,
+                    const currentDictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
+                        this.editor.getPosition(),
                         this.state.dataDictionary,
                         this.state.schemaDictionary,
                         this.monacoValue[0].split("\n")
                     );
-                    this.editor.setPosition(position);
-                    this.editor.revealPositionInCenter(position, 0);
+
+                    if (currentDictionaryId !== this.state.activeDictionaryId) {
+                        const position = findMonacoEditorHTMLPositionByDictionaryId(
+                            e.data.dictionaryId || e.data.activeDictionaryId,
+                            this.state.dataDictionary,
+                            this.state.schemaDictionary,
+                            this.monacoValue[0].split("\n")
+                        );
+                        this.editor.setPosition(position);
+                        this.editor.revealPositionInCenter(position, 0);
+                    }
                 }
             );
         }
