@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node: [14.x]
@@ -40,15 +39,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node }}
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        node: [14.x]
-
-    steps:    
     - name: Build & prepare web application
       run: |
         npm ci
@@ -57,7 +47,21 @@ jobs:
         cd www
         npm ci
         ls -lta
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Creator Staging Site
+        path: ${{ github.workspace }}/${{ env.AZURE_WEBAPP_DIST_PATH }}
+       
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
 
+    steps:    
+    - name: Deploy PR
+      uses: actions/download-artifact@v1
+      with:
+        name: Creator Staging Site
+        path: ${{ github.workspace }}/${{ env.AZURE_WEBAPP_DIST_PATH }}
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
@@ -65,7 +69,6 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
-
     - name: 'Deploy to Passive Azure Region'
       uses: azure/webapps-deploy@v2
       with:
