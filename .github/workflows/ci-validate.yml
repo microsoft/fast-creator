@@ -60,7 +60,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: npm install and test
         run: |
-          npm ci
+          npm ci --ignore-scripts
           npm test --if-present
 
   deploy:
