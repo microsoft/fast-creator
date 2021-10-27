@@ -1,13 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
-import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
+import {
+    findDictionaryIdByMonacoEditorHTMLPosition,
+    mapDataDictionaryToMonacoEditorHTML,
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
 import { VSCodeNativeHTMLDefinition } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
 import {
     AjvMapper,
     CustomMessage,
     DataDictionary,
     MessageSystem,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
     MonacoAdapter,
     MonacoAdapterAction,
@@ -86,7 +90,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                         // postMessage to the MessageSystem if the update
                         // is coming from Monaco and not a data dictionary update
                         config.updateMonacoModelValue(
-                            this.monacoValue,
+                            [html_beautify(this.monacoValue.join(""))],
                             this.state.lastMappedDataDictionaryToMonacoEditorHTMLValue ===
                                 this.monacoValue[0]
                         );
@@ -160,6 +164,27 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                         showSlider: "mouseover",
                     },
                     ...editorOptions,
+                }
+            );
+            this.editor.onDidChangeCursorPosition(
+                (e: monaco.editor.ICursorPositionChangedEvent): void => {
+                    if (Array.isArray(this.monacoValue) && this.monacoValue[0]) {
+                        const dictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
+                            e.position,
+                            this.state.dataDictionary,
+                            this.state.schemaDictionary,
+                            this.monacoValue[0].split("\n")
+                        );
+
+                        if (dictionaryId !== this.state.activeDictionaryId) {
+                            this.fastMessageSystem.postMessage({
+                                type: MessageSystemType.navigation,
+                                action: MessageSystemNavigationTypeAction.update,
+                                activeDictionaryId: dictionaryId,
+                                activeNavigationConfigId: "",
+                            });
+                        }
+                    }
                 }
             );
 

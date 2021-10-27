@@ -49,6 +49,10 @@ import {
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import {
+    findDictionaryIdByMonacoEditorHTMLPosition,
+    findMonacoEditorHTMLPositionByDictionaryId,
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
+import {
     CreatorState,
     ExternalInitializingData,
     FormId,
@@ -537,6 +541,33 @@ class Creator extends Editor<{}, CreatorState> {
 
         if (e.data.type === MessageSystemType.schemaDictionary) {
             updatedState.schemaDictionary = e.data.schemaDictionary;
+        }
+
+        if (e.data.type === MessageSystemType.navigation) {
+            this.setState(
+                {
+                    activeDictionaryId: e.data.dictionaryId || e.data.activeDictionaryId,
+                },
+                () => {
+                    const currentDictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
+                        this.editor.getPosition(),
+                        this.state.dataDictionary,
+                        this.state.schemaDictionary,
+                        this.monacoValue[0].split("\n")
+                    );
+
+                    if (currentDictionaryId !== this.state.activeDictionaryId) {
+                        const position = findMonacoEditorHTMLPositionByDictionaryId(
+                            e.data.dictionaryId || e.data.activeDictionaryId,
+                            this.state.dataDictionary,
+                            this.state.schemaDictionary,
+                            this.monacoValue[0].split("\n")
+                        );
+                        this.editor.setPosition(position);
+                        this.editor.revealPositionInCenter(position, 0);
+                    }
+                }
+            );
         }
 
         this.setState(updatedState as CreatorState);
