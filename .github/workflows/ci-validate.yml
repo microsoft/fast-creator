@@ -5,6 +5,7 @@ on:
     branches: 
       - release
   pull_request:
+    types: [opened, synchronize, reopened, closed]
     branches:
       - release 
 
