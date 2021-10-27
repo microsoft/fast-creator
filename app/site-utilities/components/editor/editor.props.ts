@@ -14,6 +14,7 @@ export interface EditorState {
     direction: Direction;
     transparentBackground: boolean;
     previewReady: boolean;
+    activeDictionaryId: string;
 
     /**
      * The last value that was changed from the data dictionary to
