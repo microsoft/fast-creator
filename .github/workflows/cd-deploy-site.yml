@@ -88,6 +88,6 @@ jobs:
       with:
         webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
         webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
-        color: "#DE2D6D"
-        username: "FAST DevOps Bot"
-        message: "Publishing has completed on https://github.com/microsoft/fast-creator/actions"
+        color: '#DE2D6D'
+        username: 'FAST DevOps Bot'
+        message: 'Publishing has completed on https://github.com/microsoft/fast-creator/actions'
