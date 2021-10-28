@@ -69,6 +69,10 @@ Creator will now use your local copy of FAST Tooling and any changes made and bu
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from `main` or use the *merge* button provided by GitHub.
 When submitting your pull request please make the title clear and concise, provide a description of the change, and specify the issue that will be closed.
 
+### Merging a pull request
+
+If you are merging a pull request, be sure to use the pull request title as the commit title. It is recommended that if you are merging in pull requests regularly that you add a browser extension that will auto-correct the title for you. A few that should do this are [Refined GitHub](https://github.com/sindresorhus/refined-github) and [Squashed Merge Message](https://github.com/zachwhaley/squashed-merge-message).
+
 ### Recommended Settings for Visual Studio Code
 
 You can use any code editor you like when working with the FAST Creator monorepo. One of our favorites is [Visual Studio Code](https://code.visualstudio.com/). VS Code has great autocomplete support for TypeScript and JavaScript APIs, as well as a rich ecosystem of plugins.
