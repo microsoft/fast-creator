@@ -47,7 +47,7 @@ npm run test
 The root level file `package.json` file contains a `scripts` section that defines the commands available to you for common tasks such as build, test, lint, etc.
 :::
 
-### Symlinking to FAST tooling
+### Symlinking to FAST Tooling
 
 To use the npm link feature to work simultaneously in @microsoft/fast-tooling and Creator execute the following commands:
 
@@ -68,6 +68,14 @@ Creator will now use your local copy of FAST Tooling and any changes made and bu
 
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from `release` or use the *merge* button provided by GitHub.
 When submitting your pull request please make the title clear and concise, provide a description of the change, and specify the issue that will be closed.
+
+### DevOps
+#### Understanding 'secrets' in code
+FAST Creator utilizes secrets in code as a security best practice. There are two types of secrets:
+1. Secrets for use on GitHub Actions in workflow files. [Learn more](`./.github/README.md`)
+2. Secrets for use as Application settings on Azure App Services. [Learn more](`./build/README.md`)
+
+To help assist when working in code with secrets there are README files in their respective directories to clearly explain how to manage.
 
 ### Merging a pull request
 
