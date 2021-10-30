@@ -48,11 +48,11 @@ import {
 } from "@microsoft/fast-components";
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
-import packageJson from "../package.json";
 import {
     findDictionaryIdByMonacoEditorHTMLPosition,
     findMonacoEditorHTMLPositionByDictionaryId,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
+import packageJson from "../package.json";
 import {
     CreatorState,
     ExternalInitializingData,
