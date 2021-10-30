@@ -48,6 +48,7 @@ import {
 } from "@microsoft/fast-components";
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
+import packageJson from "../package.json";
 import {
     findDictionaryIdByMonacoEditorHTMLPosition,
     findMonacoEditorHTMLPositionByDictionaryId,
@@ -79,6 +80,10 @@ import {
     renderFormTabs,
     renderNavigationTabs,
     renderPreviewSwitch,
+    userCreatorVersionKey,
+    userToolingReactVersionKey,
+    userToolingVersionKey,
+    WhatsNewDialog,
 } from "./web-components";
 import { Device } from "./web-components/devices";
 import fluentDesignTokensSchema from "./configs/fluent-ui/library.fluent-ui.design-tokens.schema.json";
@@ -225,6 +230,11 @@ class Creator extends Editor<{}, CreatorState> {
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
             displayMode: DisplayMode.interactive,
+            whatsNewAvailable: false,
+            showWhatsNewDialog: false,
+            userToolingVersion: localStorage.getItem(userToolingVersionKey),
+            userToolingReactVersion: localStorage.getItem(userToolingReactVersionKey),
+            userCreatorVersion: localStorage.getItem(userCreatorVersionKey),
         };
     }
 
@@ -235,157 +245,180 @@ class Creator extends Editor<{}, CreatorState> {
         const direction: Direction = (this.state.designSystemDataDictionary[0][
             designTokensLinkedDataId
         ].data as any)["direction"];
+
         return (
-            <div
-                className={this.getContainerClassNames()}
-                style={{
-                    gridTemplateColumns:
-                        this.state.displayMode === DisplayMode.interactive
-                            ? undefined
-                            : "0px auto 0px",
-                }}
-            >
-                <div className={this.paneStartClassNames}>
-                    <Logo
-                        className={this.logoClassNames}
-                        logo={FASTInlineLogo}
-                        title={"Creator"}
-                        version={"ALPHA"}
-                    />
-                    <div style={{ height: "calc(100% - 48px)" }}>
-                        {renderNavigationTabs(
-                            this.state.activeNavigationId,
-                            this.fastMessageSystem,
-                            this.state.addedLibraries,
-                            this.handleAddLibrary,
-                            this.handleNavigationVisibility
-                        )}
-                    </div>
-                    <ProjectFileTransfer
-                        projectFile={this.state}
-                        onUpdateProjectFile={this.handleUpdateProjectFile}
-                    />
-                </div>
-                <div className={this.canvasClassNames}>
-                    {this.renderCanvasOverlay()}
-                    <div className={this.menuBarClassNames}>
-                        <div className={this.mobileMenuBarClassNames}>
-                            {this.renderMobileNavigationTrigger()}
-                            <Logo logo={FASTInlineLogo} />
-                            {this.renderMobileFormTrigger()}
-                        </div>
-                        <div className={this.canvasMenuBarClassNames}>
-                            {renderDeviceSelect(
-                                this.state.deviceId,
-                                this.handleUpdateDevice,
-                                !this.state.previewReady
+            <div>
+                <WhatsNewDialog
+                    userToolingVersion={this.state.userToolingVersion}
+                    userToolingReactVersion={this.state.userToolingReactVersion}
+                    userCreatorVersion={this.state.userCreatorVersion}
+                    updateWhatsNewAvailability={this.updateWhatsNewAvailability}
+                    showWhatsNew={this.state.showWhatsNewDialog}
+                    updateWhatsNewVisibility={this.handleWhatsNewOverlay}
+                />
+                <div
+                    className={this.getContainerClassNames()}
+                    style={{
+                        gridTemplateColumns:
+                            this.state.displayMode === DisplayMode.interactive
+                                ? undefined
+                                : "0px auto 0px",
+                    }}
+                >
+                    <div className={this.paneStartClassNames}>
+                        <Logo
+                            className={this.logoClassNames}
+                            logo={FASTInlineLogo}
+                            title={"Creator"}
+                            version={packageJson.version}
+                            handleWhatsNewOverlay={
+                                this.state.whatsNewAvailable
+                                    ? this.handleWhatsNewOverlay
+                                    : null
+                            }
+                            whatsNewAvailable={this.state.whatsNewAvailable}
+                        />
+                        <div style={{ height: "calc(100% - 48px)" }}>
+                            {renderNavigationTabs(
+                                this.state.activeNavigationId,
+                                this.fastMessageSystem,
+                                this.state.addedLibraries,
+                                this.handleAddLibrary,
+                                this.handleNavigationVisibility
                             )}
-                            <Dimension
-                                width={this.state.viewerWidth}
-                                height={this.state.viewerHeight}
-                                onUpdateWidth={this.onUpdateWidth}
-                                onUpdateHeight={this.onUpdateHeight}
-                                onUpdateOrientation={this.handleUpdateOrientation}
-                                onDimensionChange={this.handleDimensionChange}
-                                disabled={!this.state.previewReady}
-                            />
-                            <div
-                                style={{
-                                    display: "flex",
-                                    marginLeft: "auto",
-                                }}
-                            >
-                                {renderPreviewSwitch(
-                                    this.state.displayMode === DisplayMode.preview,
-                                    this.handlePreviewModeSwitch,
+                        </div>
+                        <ProjectFileTransfer
+                            projectFile={this.state}
+                            onUpdateProjectFile={this.handleUpdateProjectFile}
+                        />
+                    </div>
+                    <div className={this.canvasClassNames}>
+                        {this.renderCanvasOverlay()}
+                        <div className={this.menuBarClassNames}>
+                            <div className={this.mobileMenuBarClassNames}>
+                                {this.renderMobileNavigationTrigger()}
+                                <Logo
+                                    logo={FASTInlineLogo}
+                                    handleWhatsNewOverlay={null}
+                                    whatsNewAvailable={false}
+                                />
+                                {this.renderMobileFormTrigger()}
+                            </div>
+                            <div className={this.canvasMenuBarClassNames}>
+                                {renderDeviceSelect(
+                                    this.state.deviceId,
+                                    this.handleUpdateDevice,
                                     !this.state.previewReady
                                 )}
-                                <ThemeSelector
-                                    id={"theme-selector"}
-                                    theme={this.state.theme}
-                                    onUpdateTheme={this.handleUpdateTheme}
+                                <Dimension
+                                    width={this.state.viewerWidth}
+                                    height={this.state.viewerHeight}
+                                    onUpdateWidth={this.onUpdateWidth}
+                                    onUpdateHeight={this.onUpdateHeight}
+                                    onUpdateOrientation={this.handleUpdateOrientation}
+                                    onDimensionChange={this.handleDimensionChange}
                                     disabled={!this.state.previewReady}
                                 />
-                                <DirectionSwitch
-                                    id={"direction-switch"}
-                                    direction={direction}
-                                    onUpdateDirection={this.handleUpdateDirection}
-                                    disabled={!this.state.previewReady}
-                                />
-                                <AccentColorPicker
-                                    id={"accent-color-picker"}
-                                    accentBaseColor={
-                                        accentColor !== undefined
-                                            ? accentColor
-                                            : fluentDesignTokensSchema?.properties?.[
-                                                  "accent-base-color"
-                                              ]?.default
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        marginLeft: "auto",
+                                    }}
+                                >
+                                    {renderPreviewSwitch(
+                                        this.state.displayMode === DisplayMode.preview,
+                                        this.handlePreviewModeSwitch,
+                                        !this.state.previewReady
+                                    )}
+                                    <ThemeSelector
+                                        id={"theme-selector"}
+                                        theme={this.state.theme}
+                                        onUpdateTheme={this.handleUpdateTheme}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <DirectionSwitch
+                                        id={"direction-switch"}
+                                        direction={direction}
+                                        onUpdateDirection={this.handleUpdateDirection}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <AccentColorPicker
+                                        id={"accent-color-picker"}
+                                        accentBaseColor={
+                                            accentColor !== undefined
+                                                ? accentColor
+                                                : fluentDesignTokensSchema?.properties?.[
+                                                      "accent-base-color"
+                                                  ]?.default
+                                        }
+                                        onAccentColorPickerChange={
+                                            this.handleAccentColorPickerChange
+                                        }
+                                        disabled={!this.state.previewReady}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            className={classNames(
+                                this.canvasContentClassNames,
+                                [
+                                    "canvas-content__dev-tools-hidden",
+                                    !this.state.devToolsVisible,
+                                ],
+                                [
+                                    "canvas-content__preview",
+                                    this.state.displayMode === DisplayMode.preview,
+                                ]
+                            )}
+                        >
+                            <div
+                                ref={this.viewerContainerRef}
+                                className={this.viewerClassNames}
+                                style={{
+                                    padding: `${this.viewerContentAreaPadding}px`,
+                                }}
+                            >
+                                <ModularViewer
+                                    iframeSrc={"/preview"}
+                                    messageSystem={this.fastMessageSystem}
+                                    width={this.state.viewerWidth}
+                                    height={this.state.viewerHeight}
+                                    onUpdateHeight={this.onUpdateHeight}
+                                    onUpdateWidth={this.onUpdateWidth}
+                                    responsive={true}
+                                    preview={
+                                        this.state.displayMode === DisplayMode.preview
                                     }
-                                    onAccentColorPickerChange={
-                                        this.handleAccentColorPickerChange
-                                    }
-                                    disabled={!this.state.previewReady}
                                 />
+                            </div>
+                            <div
+                                className={classNames("dev-tools", [
+                                    "preview",
+                                    this.state.displayMode === DisplayMode.preview,
+                                ])}
+                            >
+                                <div
+                                    ref={this.editorContainerRef}
+                                    style={{ height: "100%", paddingTop: "24px" }}
+                                />
+                                {renderDevToolToggle(
+                                    this.state.devToolsVisible,
+                                    this.handleDevToolsToggle
+                                )}
                             </div>
                         </div>
                     </div>
-                    <div
-                        className={classNames(
-                            this.canvasContentClassNames,
-                            [
-                                "canvas-content__dev-tools-hidden",
-                                !this.state.devToolsVisible,
-                            ],
-                            [
-                                "canvas-content__preview",
-                                this.state.displayMode === DisplayMode.preview,
-                            ]
+                    <div className={this.paneEndClassNames}>
+                        {renderFormTabs(
+                            this.state.activeFormId,
+                            this.fastMessageSystem,
+                            this.fastDesignMessageSystem,
+                            this.linkedDataControl,
+                            this.handleFormVisibility,
+                            this.updateDesignSystemDataDictionaryState
                         )}
-                    >
-                        <div
-                            ref={this.viewerContainerRef}
-                            className={this.viewerClassNames}
-                            style={{
-                                padding: `${this.viewerContentAreaPadding}px`,
-                            }}
-                        >
-                            <ModularViewer
-                                iframeSrc={"/preview"}
-                                messageSystem={this.fastMessageSystem}
-                                width={this.state.viewerWidth}
-                                height={this.state.viewerHeight}
-                                onUpdateHeight={this.onUpdateHeight}
-                                onUpdateWidth={this.onUpdateWidth}
-                                responsive={true}
-                                preview={this.state.displayMode === DisplayMode.preview}
-                            />
-                        </div>
-                        <div
-                            className={classNames("dev-tools", [
-                                "preview",
-                                this.state.displayMode === DisplayMode.preview,
-                            ])}
-                        >
-                            <div
-                                ref={this.editorContainerRef}
-                                style={{ height: "100%", paddingTop: "24px" }}
-                            />
-                            {renderDevToolToggle(
-                                this.state.devToolsVisible,
-                                this.handleDevToolsToggle
-                            )}
-                        </div>
                     </div>
-                </div>
-                <div className={this.paneEndClassNames}>
-                    {renderFormTabs(
-                        this.state.activeFormId,
-                        this.fastMessageSystem,
-                        this.fastDesignMessageSystem,
-                        this.linkedDataControl,
-                        this.handleFormVisibility,
-                        this.updateDesignSystemDataDictionaryState
-                    )}
                 </div>
             </div>
         );
@@ -440,6 +473,18 @@ class Creator extends Editor<{}, CreatorState> {
                 });
             }
         );
+    };
+
+    private updateWhatsNewAvailability = (whatsNewAvailable: boolean): void => {
+        this.setState({
+            whatsNewAvailable,
+        });
+    };
+
+    private handleWhatsNewOverlay = (): void => {
+        this.setState({
+            showWhatsNewDialog: !this.state.showWhatsNewDialog,
+        });
     };
 
     private handleLinkedDataUpdates = (

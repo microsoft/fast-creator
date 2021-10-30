@@ -2,6 +2,7 @@
 import React from "react";
 import {
     fastButton,
+    fastDialog,
     fastSelect,
     fastSlider,
     fastSliderLabel,
@@ -50,6 +51,7 @@ import { defaultDevices, Device } from "./devices";
  */
 DesignSystem.getOrCreate().register(
     fastButton(),
+    fastDialog(),
     fastSelect(),
     fastSlider(),
     fastSliderLabel(),
@@ -525,3 +527,5 @@ export function renderPreviewSwitch(
         </fast-switch>
     );
 }
+
+export * from "./whats-new";
