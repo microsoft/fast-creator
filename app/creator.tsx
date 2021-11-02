@@ -52,12 +52,7 @@ import {
     findMonacoEditorHTMLPositionByDictionaryId,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
 import packageJson from "../package.json";
-import {
-    CreatorState,
-    FormId,
-    NavigationId,
-    ProjectFile,
-} from "./creator.props";
+import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";

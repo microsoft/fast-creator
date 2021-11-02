@@ -1,4 +1,9 @@
-import { DataDictionary, MessageSystem, MessageSystemType, SchemaDictionary } from "@microsoft/fast-tooling";
+import {
+    DataDictionary,
+    MessageSystem,
+    MessageSystemType,
+    SchemaDictionary,
+} from "@microsoft/fast-tooling";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 
 export enum ExternalMessageType {
@@ -14,30 +19,30 @@ export interface ExternalMessageInitializeDataDictionary {
     /**
      * The type of external message sent
      */
-     type: ExternalMessageType.initializeDataDictionary;
+    type: ExternalMessageType.initializeDataDictionary;
 
-     /**
-      * The data dictionary for resetting the
-      * current data dictionary
-      */
-     dataDictionary: DataDictionary<unknown>;
- 
-     /**
-      * The schema dictionary for initializing the data
-      */
-     schemaDictionary: SchemaDictionary;
+    /**
+     * The data dictionary for resetting the
+     * current data dictionary
+     */
+    dataDictionary: DataDictionary<unknown>;
+
+    /**
+     * The schema dictionary for initializing the data
+     */
+    schemaDictionary: SchemaDictionary;
 }
 
 export interface ExternalMessageAddLibrary {
     /**
      * The type of external message sent
      */
-     type: ExternalMessageType.addLibrary;
+    type: ExternalMessageType.addLibrary;
 
-     /**
-      * The component library to be added
-      */
-     libraryId: string;
+    /**
+     * The component library to be added
+     */
+    libraryId: string;
 }
 
 /**
@@ -47,17 +52,19 @@ export interface ExternalMessageInitializeDataDictionaryDeprecated {
     /**
      * The type of external message sent
      */
-     type: ExternalMessageType.dataDictionary;
+    type: ExternalMessageType.dataDictionary;
 
-     /**
-      * The data dictionary for resetting the
-      * current data dictionary
-      */
-     data: DataDictionary<unknown>;
+    /**
+     * The data dictionary for resetting the
+     * current data dictionary
+     */
+    data: DataDictionary<unknown>;
 }
 
-export type ExternalInitializingData = ExternalMessageInitializeDataDictionary | ExternalMessageAddLibrary | ExternalMessageInitializeDataDictionaryDeprecated;
-
+export type ExternalInitializingData =
+    | ExternalMessageInitializeDataDictionary
+    | ExternalMessageAddLibrary
+    | ExternalMessageInitializeDataDictionaryDeprecated;
 
 export interface WindowMessageConfig {
     /**
@@ -92,13 +99,13 @@ export class WindowMessage<C extends WindowMessageConfig> {
     private handleWindowMessage = (e: MessageEvent): void => {
         if (e.data) {
             let messageData: XOR<null, ExternalInitializingData>;
-    
+
             try {
                 messageData = JSON.parse(e.data);
             } catch (e) {
                 messageData = null;
             }
-    
+
             if (messageData?.type) {
                 switch (messageData.type) {
                     case ExternalMessageType.dataDictionary:
@@ -112,7 +119,8 @@ export class WindowMessage<C extends WindowMessageConfig> {
                         this.messageSystem.postMessage({
                             type: MessageSystemType.initialize,
                             dataDictionary: messageData.dataDictionary,
-                            schemaDictionary: (messageData as ExternalMessageInitializeDataDictionary).schemaDictionary,
+                            schemaDictionary: (messageData as ExternalMessageInitializeDataDictionary)
+                                .schemaDictionary,
                         });
                         break;
                     case ExternalMessageType.addLibrary:
