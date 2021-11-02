@@ -6,8 +6,7 @@ Each `workflow` file may contain secrets that require additional explanation and
 
 *Secrets*
 * AZURE_CONNECTION_STRING_STORAGE: The connection string used to connect client-side applications to backend Azure CosmosDB.
-* AZURE_PUBLISH_PROFILE_CREATE_ACTIVE: The publishing profile string used to deploy to the Active Region on Azure App Service Plans.
-* AZURE_PUBLISH_PROFILE_CREATE_PASSIVE: The publishing profile string used to deploy to the Passive Region on Azure App Service Plans.
+* AZURE_PUBLISH_PROFILE_CREATOR: The publishing profile string used to deploy to Azure App Services.
 * AZURE_STATIC_WEB_APP_PR_TOKEN: The publishing profile string used to connect to Azure Static Web Apps for use in Pull Request validations.
 * DISCORD_NOTIFICATION_WEBHOOK_ID: The identifier on Discord for `#ms-internal-notifications`. To find, click on the channel settings and find the integration webhook.
 * DISCORD_NOTIFICATION_WEBHOOK_TOKEN: The identifier on Discord for `#ms-internal-notifications`. To find, click on the channel settings and find the integration webhook.
