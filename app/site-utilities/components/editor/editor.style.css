@@ -10,6 +10,7 @@ html {
     --fast-tooling-l4-color: #1B1B1B;
     --menu-bar-background: #333333;
     --container-background-hover: #434343;
+    --font-color: #FFFFFF;
 }
 
 @font-face {
@@ -24,20 +25,51 @@ html {
 }
 
 body, html {
-    font-family: SegoeUIVF, Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-family: var(--body-font);
+    font-size: var(--type-ramp-base-font-size);
+    line-height: var(--type-ramp-base-line-height);
     padding: 0;
     margin: 0;
     overflow-x: hidden;
 }
 
-html::-webkit-scrollbar {
+h1 {
+    font-size: var(--type-ramp-plus-5-font-size);
+    line-height: var(--type-ramp-plus-5-line-height);
+}
+
+h2 {
+    font-size: var(--type-ramp-plus-4-font-size);
+    line-height: var(--type-ramp-plus-4-line-height);
+}
+
+h3 {
+    font-size: var(--type-ramp-plus-3-font-size);
+    line-height: var(--type-ramp-plus-3-line-height);
+}
+
+h4 {
+    font-size: var(--type-ramp-plus-2-font-size);
+    line-height: var(--type-ramp-plus-2-line-height);
+}
+
+h5 {
+    font-size: var(--type-ramp-plus-1-font-size);
+    line-height: var(--type-ramp-plus-1-line-height);
+}
+
+h6 {
+    font-size: var(--type-ramp-minus-1-font-size);
+    line-height: var(--type-ramp-minus-1-line-height);
+}
+
+::-webkit-scrollbar {
     background: var(--fast-tooling-l1-color);
     width: 8px;
     height: 8px;
 }
 
-html::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: var(--fast-tooling-l3-color);
     border-radius: 8px;
 }
@@ -53,17 +85,6 @@ html::-webkit-scrollbar-thumb {
     overflow: auto;
     background: var(--fast-tooling-l4-color, #1B1B1B);
     overflow-x: hidden;
-}
-
-.pane::-webkit-scrollbar {
-    background: var(--fast-tooling-l1-color);
-    width: 8px;
-    height: 8px;
-}
-
-.pane::-webkit-scrollbar-thumb {
-    background: var(--fast-tooling-l3-color);
-    border-radius: 8px;
 }
 
 .pane__start {
@@ -179,6 +200,29 @@ html::-webkit-scrollbar-thumb {
     grid-row-start: 2;
     grid-column-start: 1;
     grid-column-end: 4;
+}
+
+.dialog {
+    height: 100%;
+    overflow: auto;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    color: var(--font-color);
+}
+
+.dialog .versions {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 30px 0;
+}
+
+fast-dialog fast-button {
+    display: flex;
+}
+
+fast-badge {
+    --badge-fill-primary: #FFD800;
+    --badge-color-primary: #000000;
 }
 
 @media screen and (max-width: 1279px) {
