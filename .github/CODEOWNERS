@@ -6,3 +6,7 @@
 
 # These *code owners* will be the default owners for everything in the repository.
 * @janechu @williamw2 @nicholasrice @EisenbergEffect
+
+# For DevOps and Azure Cloud
+.github/workflows/ @awentzel @janechu @EisenbergEffect
+.build/server/ @awentzel @janechu @EisenbergEffect
