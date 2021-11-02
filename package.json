@@ -1,12 +1,13 @@
 {
   "name": "@microsoft/fast-creator",
-  "version": "0.7.0",
+  "version": "0.8.0-beta",
   "description": "An application for designers and developers to create web experiences.",
   "sideEffects": false,
   "private": true,
   "scripts": {
     "build": "webpack --config=./webpack.prod.js",
     "convert:mdn-data": "node -r esm ./build/generate-mdn-data-files.js",
+    "convert:version-files": "node ./build/generate-version-files.js",
     "prettier": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ./.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",

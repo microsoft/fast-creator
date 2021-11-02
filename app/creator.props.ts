@@ -6,6 +6,7 @@ import {
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { DisplayMode } from "./utilities/shared";
 
 export enum FormId {
@@ -142,6 +143,34 @@ export interface CreatorState extends ProjectFile {
      * The preview is ready state
      */
     previewReady: boolean;
+
+    /**
+     * If there is new content since the user last visited
+     */
+    whatsNewAvailable: boolean;
+
+    /**
+     * The new content modal visibility
+     */
+    showWhatsNewDialog: boolean;
+
+    /**
+     * The users current @microsoft/fast-tooling version, used to determine
+     * the last changes the user has seen
+     */
+    userToolingVersion: XOR<string, null>;
+
+    /**
+     * The users current @microsoft/fast-tooling-react version, used to determine
+     * the last changes the user has seen
+     */
+    userToolingReactVersion: XOR<string, null>;
+
+    /**
+     * The users current @microsoft/fast-creator version, used to determine
+     * the last changes the user has seen
+     */
+    userCreatorVersion: XOR<string, null>;
 }
 
 export interface ExternalInitializingData {

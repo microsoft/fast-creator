@@ -1,6 +1,6 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { fastBadge } from "@microsoft/fast-components";
 import h from "../../web-components/pragma";
 import { LogoProps } from "./logo.props";
@@ -25,30 +25,35 @@ const headerStyle = {
 };
 const imageStyle = { verticalAlign: "middle", height: "32px" };
 const spanStyle = { verticalAlign: "middle", margin: "0 10px" };
-const style = `
-fast-badge {
-    --badge-fill-primary: #FFD800;
-    --badge-color-primary: #000000;
-}`;
 
 export const Logo: React.FC<LogoProps> = ({
     className,
     logo,
     title,
     version,
+    whatsNewAvailable,
+    handleWhatsNewOverlay,
 }: React.PropsWithChildren<LogoProps>): React.ReactElement => {
+    const versionIndicator = whatsNewAvailable ? (
+        <fast-button
+            onClick={handleWhatsNewOverlay !== null ? handleWhatsNewOverlay : undefined}
+            appearance={"accent"}
+        >
+            {version}
+        </fast-button>
+    ) : (
+        <fast-badge color={"primary"} fill={"primary"}>
+            {version}
+        </fast-badge>
+    );
+
     return (
         <div className={className} style={backgroundStyle}>
-            <style>{style}</style>
             <h1 style={headerStyle}>
                 <img src={logo} style={imageStyle} />
                 <span style={spanStyle}>{title}</span>
             </h1>
-            {version ? (
-                <fast-badge fill="primary" color="primary">
-                    {version}
-                </fast-badge>
-            ) : null}
+            {versionIndicator}
         </div>
     );
 };
