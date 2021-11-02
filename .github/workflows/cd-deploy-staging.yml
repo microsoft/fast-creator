@@ -14,8 +14,7 @@ jobs:
         node: [14.x]
 
     env:
-      AZURE_WEBAPP_ACTIVE_STAGE_NAME: create-west-app
-      AZURE_WEBAPP_PASSIVE_STAGE_NAME: create-east-app
+      AZURE_WEBAPP_NAME: creator-app
       AZURE_WEBAPP_DIST_PATH: www
       AZURE_WEBAPP_SLOT_NAME: stage
     
@@ -61,18 +60,11 @@ jobs:
       with:
         name: Creator Staging Site
         path: ${{ github.workspace }}/${{ env.AZURE_WEBAPP_DIST_PATH }}
-    - name: 'Deploy to Active Azure Region'
+    - name: 'Deploy to Azure'
       uses: azure/webapps-deploy@v2
       with:
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATE_ACTIVE }}
-        app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
-        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
-        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
-    - name: 'Deploy to Passive Azure Region'
-      uses: azure/webapps-deploy@v2
-      with:
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATE_PASSIVE }}
-        app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATOR }}
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
 
@@ -87,5 +79,6 @@ jobs:
         webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
         webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
         color: '#DE2D6D'
-        username: 'FAST DevOps Bot'
-        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast-creator/actions'
+        username: 'FAST DevOps Creator Bot'
+        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast-creator/actions/workflows/cd-deploy-staging.yml'
+        
