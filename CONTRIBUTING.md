@@ -71,7 +71,7 @@ When submitting your pull request please make the title clear and concise, provi
 
 ### DevOps
 #### Workflows
-This folder represents GitHub Action resources.
+The `.github/` folder represents GitHub Action resources.
 
 All files in the `/workflows` subfolder are automatically used during the CI/CD process.
 
