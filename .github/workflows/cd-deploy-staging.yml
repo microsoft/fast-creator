@@ -48,23 +48,24 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Creator Staging Site
-        path: ${{ github.workspace }}/${{ env.AZURE_WEBAPP_DIST_PATH }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
        
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:    
-    - uses: actions/download-artifact@v1
+    - name: Deploy PR
+      uses: actions/download-artifact@v1
       with:
         name: Creator Staging Site
-        path: ${{ github.workspace }}/${{ env.AZURE_WEBAPP_DIST_PATH }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
     - name: 'Deploy to Azure'
       uses: azure/webapps-deploy@v2
       with:
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATOR }}
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}/
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
 
   notify:
