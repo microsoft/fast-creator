@@ -15,12 +15,15 @@ import {
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import {
+    cssBoxModelCssProperties,
     cssLayoutCssProperties,
     DataType,
     fastToolingColorPicker,
+    fastToolingCSSBoxModel,
     fastToolingCSSLayout,
     fastToolingFile,
     fastToolingFileActionObjectUrl,
+    fastToolingUnitsTextField,
     MessageSystem,
     voidElements,
 } from "@microsoft/fast-tooling";
@@ -64,7 +67,9 @@ DesignSystem.getOrCreate().register(
     fastToolingColorPicker({ prefix: "fast-tooling" }),
     fastToolingCSSLayout({ prefix: "fast-tooling" }),
     fastToolingFile({ prefix: "fast-tooling" }),
-    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" })
+    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" }),
+    fastToolingUnitsTextField({ prefix: "fast-tooling" }),
+    fastToolingCSSBoxModel({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -217,30 +222,6 @@ export function getSliderControls(
     ];
 }
 
-function renderCSSTextControl(
-    styleName: string,
-    labelText: string,
-    config: CSSControlConfig
-): React.ReactNode {
-    const id: string = "style-" + styleName;
-    return (
-        <div>
-            <label htmlFor={id}>{labelText}</label>
-            <fast-text-field
-                id={id}
-                value={config.css[styleName]}
-                events={{
-                    input: (e: React.ChangeEvent): void => {
-                        config.onChange({
-                            [styleName]: (e.target as HTMLInputElement).value,
-                        });
-                    },
-                }}
-            ></fast-text-field>
-        </div>
-    );
-}
-
 function getCSSControls(): StandardControlPlugin {
     return new StandardControlPlugin({
         id: "style",
@@ -266,24 +247,17 @@ function getCSSControls(): StandardControlPlugin {
                             },
                         }),
                         new CSSStandardControlPlugin({
-                            id: "margin",
-                            propertyNames: ["margin"],
+                            id: "boxmodel",
+                            propertyNames: cssBoxModelCssProperties,
                             control: (config: CSSControlConfig) => {
-                                return renderCSSTextControl("margin", "margin", config);
-                            },
-                        }),
-                        new CSSStandardControlPlugin({
-                            id: "padding",
-                            propertyNames: ["padding"],
-                            control: (config: CSSControlConfig) => {
-                                return renderCSSTextControl("padding", "padding", config);
-                            },
-                        }),
-                        new CSSStandardControlPlugin({
-                            id: "width",
-                            propertyNames: ["width"],
-                            control: (config: CSSControlConfig) => {
-                                return renderCSSTextControl("width", "width", config);
+                                return (
+                                    <CSSBoxModel
+                                        key={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
+                                        webComponentKey={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
+                                        value={config.css}
+                                        onChange={config.onChange}
+                                    />
+                                );
                             },
                         }),
                     ]}
@@ -503,6 +477,50 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
                 key={this.props.webComponentKey}
                 ref={this.setLayoutRef}
             ></fast-tooling-css-layout>
+        );
+    }
+}
+
+export interface CSSBoxModelProps {
+    onChange: (config: { [key: string]: string }) => void;
+    webComponentKey: string;
+    value: { [key: string]: string };
+}
+
+export class CSSBoxModel extends React.Component<CSSBoxModelProps, {}> {
+    private handleChange(newStyle: string) {
+        const styles: Array<string> = newStyle.split(";");
+        let output = {};
+        cssBoxModelCssProperties.forEach(prop => {
+            output[prop] = "";
+        });
+        styles.forEach(value => {
+            const style: Array<string> = value.split(":");
+            if (style[0] !== "") {
+                output[style[0]] = style[1];
+            }
+        });
+        this.props.onChange(output);
+    }
+
+    render() {
+        const newValue: string = Object.entries(this.props.value)
+            .map(([key, value]: [string, string]) => {
+                return `${key}: ${value};`;
+            })
+            .reduce((prevValue, currValue) => {
+                return prevValue + " " + currValue;
+            }, "");
+        return (
+            <fast-tooling-css-box-model
+                value={newValue}
+                key={this.props.webComponentKey}
+                events={{
+                    change: (e: React.ChangeEvent): void => {
+                        this.handleChange((e.target as HTMLInputElement).value);
+                    },
+                }}
+            ></fast-tooling-css-box-model>
         );
     }
 }
