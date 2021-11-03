@@ -6,6 +6,9 @@ on:
     branches:
     - main
 
+env:
+  ARTIFACT_NAME: creator-app
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,16 +17,11 @@ jobs:
       matrix:
         node: [14.x]
 
-    env:
-      AZURE_WEBAPP_NAME: creator-app
-      AZURE_WEBAPP_DIST_PATH: www
-    
     steps:
     - uses: actions/checkout@v2
       with:
         ref: main
-    - name: Cache multiple paths
-      uses: actions/cache@v2
+    - uses: actions/cache@v2
       env:
         cache-name: cache-node-modules
       with:
@@ -39,7 +37,7 @@ jobs:
         node-version: ${{ matrix.node }}
     - name: Build & prepare web application
       run: |
-        npm ci --ignore-scripts
+        npm ci
         npm run build
         cp build/server/* www
         cd www
@@ -47,26 +45,24 @@ jobs:
         ls -lta
     - uses: actions/upload-artifact@v2
       with:
-        name: Creator Production Site
-        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        name: ${{ env.ARTIFACT_NAME }}
+        path: www
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-    - name: Deploy PR
-      uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
       with:
-        name: Creator Production Site
-        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        name: ${{ env.ARTIFACT_NAME }}
     - name: 'Deploy to Azure'
       uses: azure/webapps-deploy@v2
       with:
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATOR }}
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
-
+        app-name: creator-app
+        package: '.'
+        
   notify:
     runs-on: ubuntu-latest
     needs: deploy
