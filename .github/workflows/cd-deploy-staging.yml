@@ -17,7 +17,7 @@ jobs:
       AZURE_WEBAPP_NAME: creator-app
       AZURE_WEBAPP_DIST_PATH: www
       AZURE_WEBAPP_SLOT_NAME: stage
-      ARTIFACT_NAME: Creator Staging Site
+      ARTIFACT_NAME: creator-app-stage
 
     steps:
     - uses: actions/checkout@v2
