@@ -560,7 +560,7 @@ class Creator extends Editor<{}, CreatorState> {
                         originatorId: htmlRenderOriginatorId,
                     },
                 });
-            } else if (e.data.data) {
+            } else if (e.data.data || e.data.data === "") {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.data,
                     action: MessageSystemDataTypeAction.update,
@@ -633,7 +633,6 @@ class Creator extends Editor<{}, CreatorState> {
             } catch (e) {
                 messageData = null;
             }
-
             if (
                 messageData &&
                 messageData.type === MessageSystemType.dataDictionary &&
