@@ -17,13 +17,13 @@ jobs:
     env:
       AZURE_WEBAPP_NAME: creator-app
       AZURE_WEBAPP_DIST_PATH: www
-    
+      ARTIFACT_NAME: Creator Staging Site
+
     steps:
     - uses: actions/checkout@v2
       with:
         ref: main
-    - name: Cache multiple paths
-      uses: actions/cache@v2
+    - uses: actions/cache@v2
       env:
         cache-name: cache-node-modules
       with:
@@ -47,7 +47,7 @@ jobs:
         ls -lta
     - uses: actions/upload-artifact@v2
       with:
-        name: Creator Production Site
+        name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
   deploy:
@@ -55,10 +55,9 @@ jobs:
     needs: build
 
     steps:
-    - name: Deploy PR
-      uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v1
       with:
-        name: Creator Production Site
+        name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
     - name: 'Deploy to Azure'
       uses: azure/webapps-deploy@v2
