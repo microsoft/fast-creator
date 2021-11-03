@@ -61,7 +61,7 @@ jobs:
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CREATOR_STAGE }}
         app-name: creator-app
         slot-name: stage
-        package: ${{ env.ARTIFACT_NAME }}
+        package: ${{ env.GITHUB_WORKSPACE }}/${{ env.ARTIFACT_NAME }}
 
   notify:
     runs-on: ubuntu-latest
