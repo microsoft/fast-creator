@@ -468,7 +468,7 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
                 return `${key}: ${value};`;
             })
             .reduce((prevValue, currValue) => {
-                return prevValue + " " + currValue;
+                return `${prevValue} ${currValue}`;
             }, "");
 
         return (
@@ -488,7 +488,7 @@ export interface CSSBoxModelProps {
 }
 
 export class CSSBoxModel extends React.Component<CSSBoxModelProps, {}> {
-    private handleChange(newStyle: string) {
+    private handleChange = (newStyle: string) => {
         const styles: Array<string> = newStyle.split(";");
         let output = {};
         cssBoxModelCssProperties.forEach(prop => {
@@ -509,7 +509,7 @@ export class CSSBoxModel extends React.Component<CSSBoxModelProps, {}> {
                 return `${key}: ${value};`;
             })
             .reduce((prevValue, currValue) => {
-                return prevValue + " " + currValue;
+                return `${prevValue} ${currValue}`;
             }, "");
         return (
             <fast-tooling-css-box-model
