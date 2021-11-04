@@ -36,6 +36,7 @@ There are two main planning cadences, a short term weekly planning cadence (simi
     - The changelog for new releases should be generated via beachball.
         - This may at some point become part of the app, similar to how other apps have a notification with "what's new in this version" pop up.
 - The milestone for the release is closed.
+- A milestone retrospective is conducted.
 
 ## Planning a feature
 
@@ -79,6 +80,10 @@ Feature planning includes converting `idea` issues into issues, gathering requir
 ### User testing
 
 During a release 2 users will be consulted for user testing. This will come in the form of 2 separate meetings in which the user will be prompted with a task and recorded during the session. The video will then be posted to this [channel](https://msit.microsoftstream.com/channel/ca8b0840-98dc-948e-a12d-f1ec27b5c313) and sent to product managers for review. The bugs and features resulting from the user testing will be filed as issues in either FAST Creator or FAST Tooling by @janechu. The next release milestone will be created at this time to place bugs and/or features into.
+
+### Milestone retrospective
+
+After the completion of a milestone, we will conduct a retrospective to further improve the process. The retrospective should include everyone who was involved in the work for that milestone, both site updates and FAST tooling dependencies, to collect relevant feedback.
 
 ### Communication and Demo-worthiness
 
