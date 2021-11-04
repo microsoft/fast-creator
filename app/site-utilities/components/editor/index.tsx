@@ -24,6 +24,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import { rootOriginatorId } from "../../../utilities";
 import { EditorState } from "./editor.props";
 
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -168,7 +169,11 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             );
             this.editor.onDidChangeCursorPosition(
                 (e: monaco.editor.ICursorPositionChangedEvent): void => {
-                    if (Array.isArray(this.monacoValue) && this.monacoValue[0]) {
+                    if (
+                        e.reason === 3 &&
+                        Array.isArray(this.monacoValue) &&
+                        this.monacoValue[0]
+                    ) {
                         const dictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
                             e.position,
                             this.state.dataDictionary,
@@ -182,6 +187,9 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                                 action: MessageSystemNavigationTypeAction.update,
                                 activeDictionaryId: dictionaryId,
                                 activeNavigationConfigId: "",
+                                options: {
+                                    originatorId: rootOriginatorId,
+                                },
                             });
                         }
                     }
