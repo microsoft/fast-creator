@@ -172,16 +172,3 @@ export interface CreatorState extends ProjectFile {
      */
     userCreatorVersion: XOR<string, null>;
 }
-
-export interface ExternalInitializingData {
-    /**
-     * The type of external message sent
-     */
-    type: MessageSystemType.dataDictionary;
-
-    /**
-     * The data dictionary for resetting the
-     * current data dictionary
-     */
-    data: DataDictionary<unknown>;
-}

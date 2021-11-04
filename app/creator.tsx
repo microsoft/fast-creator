@@ -47,19 +47,12 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
-import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import {
     findDictionaryIdByMonacoEditorHTMLPosition,
     findMonacoEditorHTMLPositionByDictionaryId,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
 import packageJson from "../package.json";
-import {
-    CreatorState,
-    ExternalInitializingData,
-    FormId,
-    NavigationId,
-    ProjectFile,
-} from "./creator.props";
+import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
@@ -98,6 +91,7 @@ import {
     rootOriginatorId,
 } from "./utilities";
 import { fluentUIComponentId } from "./configs/fluent-ui";
+import { WindowMessage } from "./window-message";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -184,7 +178,11 @@ class Creator extends Editor<{}, CreatorState> {
         }
 
         window.onresize = rafThrottle(this.handleWindowResize);
-        window.addEventListener("message", this.handleWindowMessage);
+        new WindowMessage({
+            messageSystem: this.fastMessageSystem,
+            schemaDictionary: schemaDictionaryWithNativeElements,
+            addLibraryCallback: this.handleAddLibrary,
+        });
 
         this.setupMonacoEditor(monaco);
 
@@ -621,29 +619,6 @@ class Creator extends Editor<{}, CreatorState> {
     private handleDesignSystemMessageSystem = (e: MessageEvent): void => {
         if (e.data.type === MessageSystemType.data) {
             this.updateDesignSystemDataDictionaryState(e.data.data);
-        }
-    };
-
-    private handleWindowMessage = (e: MessageEvent): void => {
-        if (e.data) {
-            let messageData: XOR<null, ExternalInitializingData>;
-
-            try {
-                messageData = JSON.parse(e.data);
-            } catch (e) {
-                messageData = null;
-            }
-            if (
-                messageData &&
-                messageData.type === MessageSystemType.dataDictionary &&
-                messageData.data
-            ) {
-                this.fastMessageSystem.postMessage({
-                    type: MessageSystemType.initialize,
-                    data: messageData.data,
-                    schemaDictionary: schemaDictionaryWithNativeElements,
-                });
-            }
         }
     };
 
