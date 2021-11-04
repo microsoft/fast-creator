@@ -4,7 +4,6 @@ html {
     --desktop-footer-height: 178px;
     --mobile-footer-height: 283px;
     --mobile-pane-width: 300;
-    --mobile-pane-edit-width: 470;
     --footer-background-color: #181818;
     --fast-tooling-l1-color: #3B3B3B;
     --fast-tooling-l3-color: #2B2B2B;
@@ -103,7 +102,7 @@ h6 {
 .container {
     display: grid;
     background: var(--container-background);
-    grid-template-columns: 300px auto 470px;
+    grid-template-columns: 300px auto 300px;
 }
 
 .canvas {
@@ -226,27 +225,18 @@ fast-badge {
     --badge-color-primary: #000000;
 }
 
-fast-tooling-css-box-model 
-{
-    --type-ramp-base-font-size:10px;
-    --design-unit:2;
-    --stroke-width:0;
-    width:410px;
-    margin-bottom: 10px;
-}
-
 @media screen and (max-width: 1279px) {
     .container {
-        grid-template-columns: calc(var(--mobile-pane-width) * 1px) auto calc(var(--mobile-pane-edit-width) * 1px);
+        grid-template-columns: calc(var(--mobile-pane-width) * 1px) auto calc(var(--mobile-pane-width) * 1px);
         grid-template-rows: auto var(--mobile-footer-height);
-        margin: 0 calc(var(--mobile-pane-edit-width) * -1px) 0 calc(var(--mobile-pane-width) * -1px);
+        margin: 0 calc(var(--mobile-pane-width) * -1px);
         width: calc((var(--mobile-pane-width) * 2 * 1px) + 100vw);
         transition: margin-left 0.2s ease-in;
         height: calc(100vh + var(--mobile-footer-height));
     }
 
     .container.container__form-visible {
-        margin-left: calc((var(--mobile-pane-edit-width) + var(--mobile-pane-width)) * -1px);
+        margin-left: calc(var(--mobile-pane-width) * 2 * -1px);
     }
 
     .container.container__navigation-visible {
@@ -293,10 +283,6 @@ fast-tooling-css-box-model
     .pane {
         width: calc(var(--mobile-pane-width) * 1px);
         --fast-tooling-l4-color: #1F1F1F;
-    }
-
-    .pane__end {
-        width: calc(var(--mobile-pane-edit-width) * 1px);
     }
 
     .mobile-pane-trigger {

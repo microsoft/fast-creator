@@ -490,7 +490,7 @@ export interface CSSBoxModelProps {
 export class CSSBoxModel extends React.Component<CSSBoxModelProps, {}> {
     private handleChange = (newStyle: string) => {
         const styles: Array<string> = newStyle.split(";");
-        let output = {};
+        const output = {};
         cssBoxModelCssProperties.forEach(prop => {
             output[prop] = "";
         });
@@ -501,7 +501,7 @@ export class CSSBoxModel extends React.Component<CSSBoxModelProps, {}> {
             }
         });
         this.props.onChange(output);
-    }
+    };
 
     render() {
         const newValue: string = Object.entries(this.props.value)
