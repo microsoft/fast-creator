@@ -4,6 +4,7 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
+    DataDictionary,
     fastToolingColorPicker,
     htmlRenderOriginatorId,
     MessageSystemDataTypeAction,
@@ -627,7 +628,7 @@ class Creator extends Editor<{}, CreatorState> {
             this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 data: projectFile.dataDictionary,
-                schemaDictionary: schemaDictionaryWithNativeElements,
+                schemaDictionary: this.getLibrarySchemas(projectFile.addedLibraries),
             })
         );
     };
@@ -665,6 +666,21 @@ class Creator extends Editor<{}, CreatorState> {
             this.editor.layout();
         }
     };
+
+    private getLibrarySchemas(addedLibraries: string[]): SchemaDictionary {
+        const schemaDictionary: SchemaDictionary = schemaDictionaryWithNativeElements;
+
+        addedLibraries.forEach((libraryId: string) => {
+            Object.values(elementLibraries[libraryId].componentDictionary).forEach(
+                componentDictionaryItem => {
+                    schemaDictionary[(componentDictionaryItem.schema as any).$id] =
+                        componentDictionaryItem.schema;
+                }
+            );
+        });
+
+        return schemaDictionary;
+    }
 
     private getDevices(): Device[] {
         return defaultDevices.concat({
