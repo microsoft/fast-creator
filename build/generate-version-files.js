@@ -27,9 +27,12 @@ const fastCreatorChangelog = require("../CHANGELOG.json");
  */
 
 function writeCurrentVersionFile() {
+    const generatedFastToolingChangelog = require("../app/generated/fast-tooling-package-changes.json");
+    const generatedFastToolingReactChangelog = require("../app/generated/fast-tooling-react-package-changes.json");
+
     const fileContents = {
-        "@microsoft/fast-tooling": fastToolingChangelog.entries[0].version,
-        "@microsoft/fast-tooling-react": fastToolingReactChangelog.entries[0].version,
+        "@microsoft/fast-tooling": generatedFastToolingChangelog.entries[0].version,
+        "@microsoft/fast-tooling-react": generatedFastToolingReactChangelog.entries[0].version,
         "@microsoft/fast-creator": fastCreatorChangelog.entries[0].version,
     };
 
@@ -111,5 +114,5 @@ function writePackageChangeFiles() {
     );
 }
 
-writeCurrentVersionFile();
 writePackageChangeFiles();
+writeCurrentVersionFile();
