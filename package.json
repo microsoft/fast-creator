@@ -77,8 +77,8 @@
     "@fluentui/web-components": "^1.2.3",
     "@microsoft/fast-components": "^2.10.1",
     "@microsoft/fast-foundation": "^2.14.0",
-    "@microsoft/fast-tooling": "^0.31.2",
-    "@microsoft/fast-tooling-react": "^2.12.4",
+    "@microsoft/fast-tooling": "^0.31.3",
+    "@microsoft/fast-tooling-react": "^2.12.5",
     "monaco-editor": "^0.28.1",
     "monaco-editor-webpack-plugin": "^4.2.0"
   }
