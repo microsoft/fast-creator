@@ -564,6 +564,7 @@ class Creator extends Editor<{}, CreatorState> {
                     type: MessageSystemType.data,
                     action: MessageSystemDataTypeAction.update,
                     data: e.data.data,
+                    dictionaryId: e.data.dictionaryId,
                     dataLocation: "",
                     options: {
                         originatorId: htmlRenderOriginatorId,
