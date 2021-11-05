@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"@microsoft/fast-tooling":"0.31.3","@microsoft/fast-tooling-react":"2.12.5","@microsoft/fast-creator":"0.8.0-beta"}
 =======
 <<<<<<< Updated upstream
@@ -7,3 +8,6 @@
 {"@microsoft/fast-tooling":"0.31.3","@microsoft/fast-tooling-react":"2.12.3","@microsoft/fast-creator":"0.8.0-beta"}
 >>>>>>> Stashed changes
 >>>>>>> ee6b96d (Fix an issue where ignored bump version updates caused a version mismatch in the what's new feature)
+=======
+{"@microsoft/fast-tooling":"0.31.3","@microsoft/fast-tooling-react":"2.12.3","@microsoft/fast-creator":"0.8.0-beta"}
+>>>>>>> 41d24d4 (Update without the merge conflicts)
