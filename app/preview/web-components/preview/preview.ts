@@ -362,6 +362,7 @@ export class Preview extends FoundationElement {
                         type: MessageSystemType.custom,
                         action: ViewerCustomAction.call,
                         data: message.data.data,
+                        dictionaryId: message.data.dictionaryId,
                     },
                     "*"
                 );
