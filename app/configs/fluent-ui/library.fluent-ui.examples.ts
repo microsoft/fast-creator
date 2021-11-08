@@ -148,7 +148,7 @@ export const fluentTabExample = {
     data: {
         id: uniqueId("Tab"),
     },
-    dataLocation: "Slot",
+    dataLocation: "SlotTab",
     linkedData: [
         {
             schemaId: textSchema.id,
@@ -162,7 +162,7 @@ export const fluentTabPanelExample = {
     data: {
         id: uniqueId("TabPanel"),
     },
-    dataLocation: "Slot",
+    dataLocation: "SlotTabpanel",
     linkedData: [
         {
             schemaId: textSchema.id,
