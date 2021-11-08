@@ -41,13 +41,23 @@ import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilit
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
 import { DesignSystem } from "@microsoft/fast-foundation";
+import { FormCategoryDictionary } from "@microsoft/fast-tooling-react/dist/form/form.props";
 import { FormId, NavigationId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
 import { elementLibraries } from "../configs";
-import { componentCategories, downChevron, upChevron } from "../site-utilities";
+import { downChevron, upChevron } from "../site-utilities";
+import { componentCategories as nativeComponentCategories } from "../configs/native/library.native.categories";
+import { componentCategories as fluentUIComponentCategories } from "../configs/fluent-ui/library.fluent-ui.categories";
+import { componentCategories as fastComponentCategories } from "../configs/fast/library.fast.categories";
 import { toggleStyle } from "../site-utilities/components/style";
 import h from "../site-utilities/web-components/pragma";
 import { defaultDevices, Device } from "./devices";
+
+const componentCategories: FormCategoryDictionary = {
+    ...nativeComponentCategories,
+    ...fluentUIComponentCategories,
+    ...fastComponentCategories,
+};
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
