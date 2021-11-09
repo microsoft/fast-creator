@@ -60,7 +60,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     private adapter: MonacoAdapter;
     private monacoEditorModel: monaco.editor.ITextModel;
     private firstRun: boolean = true;
-    private positionUpdateTimer: XOR<number, NodeJS.Timer>;
+    private positionUpdateTimeout: XOR<number, NodeJS.Timer>;
 
     constructor(props: P) {
         super(props);
@@ -171,11 +171,11 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             );
             this.editor.onDidChangeCursorPosition(
                 (e: monaco.editor.ICursorPositionChangedEvent): void => {
-                    if (this.positionUpdateTimer) {
-                        clearTimeout(this.positionUpdateTimer as number);
+                    if (this.positionUpdateTimeout) {
+                        clearTimeout(this.positionUpdateTimeout as number);
                     }
 
-                    this.positionUpdateTimer = setTimeout(
+                    this.positionUpdateTimeout = setTimeout(
                         this.updateNavigation.bind(this, e),
                         500
                     );
