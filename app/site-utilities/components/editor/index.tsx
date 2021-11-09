@@ -24,6 +24,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { rootOriginatorId } from "../../../utilities";
 import { EditorState } from "./editor.props";
 
@@ -59,6 +60,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     private adapter: MonacoAdapter;
     private monacoEditorModel: monaco.editor.ITextModel;
     private firstRun: boolean = true;
+    private positionUpdateTimeout: XOR<number, NodeJS.Timer>;
 
     constructor(props: P) {
         super(props);
@@ -169,36 +171,43 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             );
             this.editor.onDidChangeCursorPosition(
                 (e: monaco.editor.ICursorPositionChangedEvent): void => {
-                    if (
-                        e.reason === 3 &&
-                        Array.isArray(this.monacoValue) &&
-                        this.monacoValue[0]
-                    ) {
-                        const dictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
-                            e.position,
-                            this.state.dataDictionary,
-                            this.state.schemaDictionary,
-                            this.monacoValue[0].split("\n")
-                        );
-
-                        if (dictionaryId !== this.state.activeDictionaryId) {
-                            this.fastMessageSystem.postMessage({
-                                type: MessageSystemType.navigation,
-                                action: MessageSystemNavigationTypeAction.update,
-                                activeDictionaryId: dictionaryId,
-                                activeNavigationConfigId: "",
-                                options: {
-                                    originatorId: rootOriginatorId,
-                                },
-                            });
-                        }
+                    if (this.positionUpdateTimeout) {
+                        clearTimeout(this.positionUpdateTimeout as number);
                     }
+
+                    this.positionUpdateTimeout = setTimeout(
+                        this.updateNavigation.bind(this, e),
+                        500
+                    );
                 }
             );
 
             this.updateEditorContent(this.state.dataDictionary);
         }
     };
+
+    public updateNavigation(e: monaco.editor.ICursorPositionChangedEvent) {
+        if (e.reason === 3 && Array.isArray(this.monacoValue) && this.monacoValue[0]) {
+            const dictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
+                e.position,
+                this.state.dataDictionary,
+                this.state.schemaDictionary,
+                this.monacoValue[0].split("\n")
+            );
+
+            if (dictionaryId !== this.state.activeDictionaryId) {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: dictionaryId,
+                    activeNavigationConfigId: "",
+                    options: {
+                        originatorId: rootOriginatorId,
+                    },
+                });
+            }
+        }
+    }
 
     public updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
         if (this.editor) {
