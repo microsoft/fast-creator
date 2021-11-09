@@ -18,6 +18,12 @@
             "author": "7559015+janechu@users.noreply.github.com",
             "commit": "746548ba26a32894531a27a3247791516faaa312",
             "package": "@microsoft/fast-creator"
+          },
+          {
+            "comment": "Update dependencies to include the new CSS control for margin, padding, border width, width, and height",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6b867c03c44536a4616378a596e6d72b27951589",
+            "package": "@microsoft/fast-creator"
           }
         ]
       }
