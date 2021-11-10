@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - release
+    - stage
 
 env:
   ARTIFACT_NAME: creator-app-stage
@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: release
+        ref: stage
     - uses: actions/cache@v2
       env:
         cache-name: cache-node-modules
