@@ -3,11 +3,11 @@ name: Validate
 on:
   push:
     branches: 
-      - release
+      - stage
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - release 
+      - stage 
 
 jobs:
   build:
