@@ -60,7 +60,6 @@ import { AccentColorPicker, ProjectFileTransfer } from "./components";
 import {
     Dimension,
     DirectionSwitch,
-    Editor,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
@@ -92,6 +91,7 @@ import {
 } from "./utilities";
 import { fluentUIComponentId } from "./configs/fluent-ui";
 import { WindowMessage } from "./window-message";
+import { CreatorUtilities } from "./creator.utilities";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -131,7 +131,7 @@ const schemaDictionaryWithDesignTokens: SchemaDictionary = {
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
 
-class Creator extends Editor<{}, CreatorState> {
+class Creator extends CreatorUtilities<{}, CreatorState> {
     public static displayName: string = "Creator";
 
     public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
