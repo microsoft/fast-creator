@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { fastBadge } from "@microsoft/fast-components";
-import h from "../../site-utilities/web-components/pragma";
+import h from "../pragma";
 import { LogoProps } from "./logo.props";
 
 /**

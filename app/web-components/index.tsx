@@ -45,13 +45,13 @@ import { FormCategoryDictionary } from "@microsoft/fast-tooling-react/dist/form/
 import { FormId, NavigationId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
 import { elementLibraries } from "../configs";
-import { downChevron, upChevron } from "../site-utilities";
+import { downChevron, upChevron } from "../icons";
 import { componentCategories as nativeComponentCategories } from "../configs/native/library.native.categories";
 import { componentCategories as fluentUIComponentCategories } from "../configs/fluent-ui/library.fluent-ui.categories";
 import { componentCategories as fastComponentCategories } from "../configs/fast/library.fast.categories";
 import { toggleStyle } from "../components/style";
-import h from "../site-utilities/web-components/pragma";
-import { defaultDevices, Device } from "./devices";
+import { defaultDevices, Device } from "../devices";
+import h from "./pragma";
 
 const componentCategories: FormCategoryDictionary = {
     ...nativeComponentCategories,
@@ -556,4 +556,7 @@ export function renderPreviewSwitch(
     );
 }
 
+export * from "./dimension";
+export * from "./logo";
+export * from "./project-file-transfer";
 export * from "./whats-new";
