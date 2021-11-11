@@ -35,7 +35,10 @@ export const previewTheme: string = "PREVIEW::THEME";
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 const fastDesignMessageSystemWorker = new FASTMessageSystemWorker();
 
-abstract class CreatorUtilities<P, S extends CreatorUtilitiesState> extends React.Component<P, S> {
+abstract class CreatorUtilities<
+    P,
+    S extends CreatorUtilitiesState
+> extends React.Component<P, S> {
     public editor: monaco.editor.IStandaloneCodeEditor;
     public abstract editorContainerRef: React.RefObject<HTMLDivElement>;
     public abstract viewerContainerRef: React.RefObject<HTMLDivElement>;
