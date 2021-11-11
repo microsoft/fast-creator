@@ -1,6 +1,6 @@
 import React from "react";
 import { StandardLuminance } from "@microsoft/fast-components";
-import { accentColor, toggleStyle } from "../style";
+import { accentColor, toggleStyle } from "../../../components/style";
 import { ThemeSelectorProps } from "./theme-selector.props";
 
 export const ThemeSelector: React.FC<ThemeSelectorProps> = ({

@@ -49,7 +49,7 @@ import { downChevron, upChevron } from "../site-utilities";
 import { componentCategories as nativeComponentCategories } from "../configs/native/library.native.categories";
 import { componentCategories as fluentUIComponentCategories } from "../configs/fluent-ui/library.fluent-ui.categories";
 import { componentCategories as fastComponentCategories } from "../configs/fast/library.fast.categories";
-import { toggleStyle } from "../site-utilities/components/style";
+import { toggleStyle } from "../components/style";
 import h from "../site-utilities/web-components/pragma";
 import { defaultDevices, Device } from "./devices";
 
