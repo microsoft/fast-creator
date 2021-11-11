@@ -1,5 +1,5 @@
 import React from "react";
-import { accentColor, toggleStyle } from "../style";
+import { accentColor, toggleStyle } from "../../../components/style";
 import { TransparencyToggleProps } from "./transparency-toggle.props";
 
 export const TransparencyToggle: React.FC<TransparencyToggleProps> = ({
