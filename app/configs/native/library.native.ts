@@ -1,6 +1,7 @@
 import { nativeElementSchemas, textSchema } from "../../site-utilities";
 import { NativeElementLibraryDefinition, WebComponentDefinition } from "../typings";
 import {
+    buttonExample,
     divExample,
     heading1Example,
     heading2Example,
@@ -10,11 +11,14 @@ import {
     heading6Example,
     imageExample,
     labelExample,
+    listItemExample,
     paragraphExample,
     spanExample,
     textExample,
+    unorderedListExample,
 } from "./library.native.examples";
 import {
+    buttonTag,
     divTag,
     heading1Tag,
     heading2Tag,
@@ -24,8 +28,10 @@ import {
     heading6Tag,
     imageTag,
     labelTag,
+    listItemTag,
     paragraphTag,
     spanTag,
+    unorderedListTag,
 } from "./library.native.tags";
 
 export const nativeElementId = "native-elements";
@@ -119,6 +125,21 @@ export const nativeElementLibrary: NativeElementLibraryDefinition = {
             displayName: nativeElementSchemas[labelTag].title,
             schema: nativeElementSchemas[labelTag],
             example: labelExample,
+        },
+        [nativeElementSchemas[listItemTag].$id]: {
+            displayName: nativeElementSchemas[listItemTag].title,
+            schema: nativeElementSchemas[listItemTag],
+            example: listItemExample,
+        },
+        [nativeElementSchemas[unorderedListTag].$id]: {
+            displayName: nativeElementSchemas[unorderedListTag].title,
+            schema: nativeElementSchemas[unorderedListTag],
+            example: unorderedListExample,
+        },
+        [nativeElementSchemas[buttonTag].$id]: {
+            displayName: nativeElementSchemas[buttonTag].title,
+            schema: nativeElementSchemas[buttonTag],
+            example: buttonExample,
         },
     },
 };

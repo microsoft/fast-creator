@@ -1,6 +1,7 @@
 import { nativeElementSchemas, textSchema } from "../../site-utilities";
 import { longExampleText, shortExampleText } from "../constants";
 import {
+    buttonTag,
     divTag,
     heading1Tag,
     heading2Tag,
@@ -10,8 +11,10 @@ import {
     heading6Tag,
     imageTag,
     labelTag,
+    listItemTag,
     paragraphTag,
     spanTag,
+    unorderedListTag,
 } from "./library.native.tags";
 
 export const textExample = {
@@ -140,6 +143,39 @@ export const spanExample = {
 
 export const labelExample = {
     schemaId: nativeElementSchemas[labelTag].id,
+    data: {},
+    dataLocation: "Slot",
+    linkedData: [
+        {
+            schemaId: textSchema.id,
+            data: shortExampleText,
+            dataLocation: "Slot",
+        },
+    ],
+};
+
+export const listItemExample = {
+    schemaId: nativeElementSchemas[listItemTag].id,
+    data: {},
+    dataLocation: "Slot",
+    linkedData: [
+        {
+            schemaId: textSchema.id,
+            data: shortExampleText,
+            dataLocation: "Slot",
+        },
+    ],
+};
+
+export const unorderedListExample = {
+    schemaId: nativeElementSchemas[unorderedListTag].id,
+    data: {},
+    dataLocation: "Slot",
+    linkedData: [listItemExample, listItemExample, listItemExample],
+};
+
+export const buttonExample = {
+    schemaId: nativeElementSchemas[buttonTag].id,
     data: {},
     dataLocation: "Slot",
     linkedData: [
