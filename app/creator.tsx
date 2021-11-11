@@ -56,9 +56,8 @@ import packageJson from "../package.json";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
-import { ProjectFileTransfer } from "./components";
+import { AccentColorPicker, ProjectFileTransfer } from "./components";
 import {
-    AccentColorPicker,
     Dimension,
     DirectionSwitch,
     Editor,

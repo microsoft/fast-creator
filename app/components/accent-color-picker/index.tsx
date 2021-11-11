@@ -1,5 +1,5 @@
 import React from "react";
-import { labelStyle } from "../style";
+import { labelStyle } from "../../site-utilities/components/style";
 import { AccentColorPickerProps } from "./accent-color-picker.props";
 
 export const AccentColorPicker: React.FC<AccentColorPickerProps> = ({
