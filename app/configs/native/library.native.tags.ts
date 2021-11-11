@@ -22,3 +22,5 @@ export const textAreaTag = "textarea";
 export const selectTag = "select";
 export const optionTag = "option";
 export const mainTag = "main";
+export const unorderedListTag = "ul";
+export const listItemTag = "li";
