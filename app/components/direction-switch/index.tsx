@@ -1,6 +1,6 @@
 import React from "react";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { accentColor, toggleStyle } from "../../../components/style";
+import { accentColor, toggleStyle } from "../style";
 import { DirectionSwitchProps } from "./direction-switch.props";
 
 export const DirectionSwitch: React.FC<DirectionSwitchProps> = ({
