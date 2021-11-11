@@ -2,8 +2,8 @@
 
 import React from "react";
 import { fastButton, fastNumberField } from "@microsoft/fast-components";
-import { RotateGlyph } from "../../icons/rotate";
-import h from "../../web-components/pragma";
+import { RotateGlyph } from "../../site-utilities/icons/rotate";
+import h from "../../site-utilities/web-components/pragma";
 import { DimensionProps } from "./dimension.props";
 
 fastButton;

@@ -56,15 +56,15 @@ import packageJson from "../package.json";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
-import { AccentColorPicker, ProjectFileTransfer } from "./components";
 import {
+    AccentColorPicker,
     Dimension,
     DirectionSwitch,
     Logo,
-    nativeElementExtendedSchemas,
-    textSchema,
+    ProjectFileTransfer,
     ThemeSelector,
-} from "./site-utilities";
+} from "./components";
+import { nativeElementExtendedSchemas, textSchema } from "./site-utilities";
 import { previewReady } from "./preview/constants";
 import {
     renderDeviceSelect,
