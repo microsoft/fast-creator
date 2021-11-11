@@ -3,7 +3,7 @@ import { StandardLuminance } from "@microsoft/fast-components";
 import { Direction } from "@microsoft/fast-web-utilities";
 
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
-export interface EditorState {
+export interface CreatorUtilitiesState {
     schemaDictionary: SchemaDictionary;
     dataDictionary: DataDictionary<unknown>;
     viewerWidth: number;

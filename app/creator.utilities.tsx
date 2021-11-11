@@ -25,8 +25,8 @@ import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
-import { rootOriginatorId } from "../../../utilities";
-import { EditorState } from "./editor.props";
+import { rootOriginatorId } from "./utilities";
+import { CreatorUtilitiesState } from "./creator.utilities.props";
 
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
 export const previewDirection: string = "PREVIEW::DIRECTION";
@@ -35,7 +35,7 @@ export const previewTheme: string = "PREVIEW::THEME";
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 const fastDesignMessageSystemWorker = new FASTMessageSystemWorker();
 
-abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
+abstract class CreatorUtilities<P, S extends CreatorUtilitiesState> extends React.Component<P, S> {
     public editor: monaco.editor.IStandaloneCodeEditor;
     public abstract editorContainerRef: React.RefObject<HTMLDivElement>;
     public abstract viewerContainerRef: React.RefObject<HTMLDivElement>;
@@ -404,4 +404,4 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     }
 }
 
-export { Editor, EditorState };
+export { CreatorUtilities, CreatorUtilitiesState };
