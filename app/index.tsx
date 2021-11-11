@@ -4,7 +4,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import ReactDOM from "react-dom";
 import App from "./app";
 /* eslint-disable-next-line */
-const styles = require("./site-utilities/components/editor/editor.style.css");
+const styles = require("./style.css");
 styles;
 
 /**
