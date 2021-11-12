@@ -18,11 +18,9 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { HTMLRender } from "@microsoft/fast-tooling/dist/dts/web-components/html-render/html-render";
 import { Direction } from "@microsoft/fast-web-utilities";
-import {
-    fastComponentDefinitions,
-    fluentUIComponentDefinitions,
-    nativeElementDefinitions,
-} from "../../../site-utilities";
+import { fluentUIComponentDefinitions } from "../../../configs/fluent-ui/library.fluent-ui.schemas";
+import { nativeElementDefinitions } from "../../../configs/native/library.native.schemas";
+import { fastComponentDefinitions } from "../../../configs/fast/library.fast.schemas";
 import {
     creatorOriginatorId,
     CustomMessageSystemActions,

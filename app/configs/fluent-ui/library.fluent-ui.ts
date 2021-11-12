@@ -2,11 +2,11 @@ import {
     VSCodeNativeHTMLDefinition,
     VSCodeNativeHTMLTag,
 } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
+import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentUIComponentDefinitions,
     fluentUIComponentExtendedSchemas,
-} from "../../site-utilities";
-import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
+} from "./library.fluent-ui.schemas";
 import {
     fluentAnchorExample,
     fluentBadgeExample,
@@ -53,11 +53,12 @@ import {
     fluentTextAreaTag,
     fluentTextFieldTag,
 } from "./library.fluent-ui.tags";
+import { fluentUILibraryName } from "./library.fluent-ui.schemas";
 
 export const fluentUIComponentId = "fluent-ui-components";
 export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
     id: fluentUIComponentId,
-    displayName: "Fluent UI Components",
+    displayName: `${fluentUILibraryName} Components`,
     optional: true,
     import: async () => {
         await import("./library.fluent-ui.import");

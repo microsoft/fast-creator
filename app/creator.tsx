@@ -57,7 +57,10 @@ import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
 import { AccentColorPicker, DirectionSwitch, ThemeSelector } from "./components";
-import { nativeElementExtendedSchemas, textSchema } from "./site-utilities";
+import {
+    nativeElementExtendedSchemas,
+    textSchema,
+} from "./configs/native/library.native.schemas";
 import { previewReady } from "./preview/constants";
 import {
     Dimension,

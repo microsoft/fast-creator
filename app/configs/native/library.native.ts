@@ -1,5 +1,6 @@
-import { nativeElementSchemas, textSchema } from "../../site-utilities";
 import { NativeElementLibraryDefinition, WebComponentDefinition } from "../typings";
+import { nativeElementSchemas } from "./library.native.schemas";
+import { textSchema } from "./library.native.schemas";
 import {
     buttonExample,
     divExample,
