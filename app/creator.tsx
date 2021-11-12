@@ -56,17 +56,13 @@ import packageJson from "../package.json";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
-import {
-    AccentColorPicker,
-    Dimension,
-    DirectionSwitch,
-    Logo,
-    ProjectFileTransfer,
-    ThemeSelector,
-} from "./components";
+import { AccentColorPicker, DirectionSwitch, ThemeSelector } from "./components";
 import { nativeElementExtendedSchemas, textSchema } from "./site-utilities";
 import { previewReady } from "./preview/constants";
 import {
+    Dimension,
+    Logo,
+    ProjectFileTransfer,
     renderDeviceSelect,
     renderDevToolToggle,
     renderFormTabs,
@@ -77,7 +73,7 @@ import {
     userToolingVersionKey,
     WhatsNewDialog,
 } from "./web-components";
-import { Device } from "./web-components/devices";
+import { Device } from "./devices";
 import fluentDesignTokensSchema from "./configs/fluent-ui/library.fluent-ui.design-tokens.schema.json";
 import {
     creatorOriginatorId,
