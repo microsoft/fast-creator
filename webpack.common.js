@@ -17,7 +17,7 @@ const updatedRootAppWebpackConfig = {
                         {
                             from: path.resolve(
                                 __dirname,
-                                "./app/site-utilities/statics/assets/favicon.ico"
+                                "./app/assets/favicon.ico"
                             ),
                             to: outDir,
                         },
