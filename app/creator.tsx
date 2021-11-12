@@ -114,7 +114,7 @@ fillColor.setValueFor(
 );
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const FASTInlineLogo = require("./site-utilities/statics/assets/fast-inline-logo.svg");
+const FASTInlineLogo = require("./assets/fast-inline-logo.svg");
 const schemaDictionaryWithNativeElements: SchemaDictionary = {
     ...nativeElementExtendedSchemas,
     [textSchema.$id]: textSchema,
