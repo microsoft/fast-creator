@@ -1,7 +1,7 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 import React from "react";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
-import h from "../site-utilities/web-components/pragma";
+import h from "../pragma";
 
 const fastToolingPackageName = "@microsoft/fast-tooling" as const;
 const fastToolingReactPackageName = "@microsoft/fast-tooling-react" as const;
@@ -157,23 +157,23 @@ export function renderWhatsNewDialog(
     userToolingReactVersion: XOR<string, null>,
     userCreatorVersion: XOR<string, null>
 ): Promise<void | JSX.Element> {
-    return import("../generated/current-version.json")
+    return import("../../generated/current-version.json")
         .then((module: CurrentVersions) => {
             return module;
         })
         .then((value: CurrentVersions) => {
             return Promise.all([
-                import("../generated/fast-creator-package-changes.json").then(
+                import("../../generated/fast-creator-package-changes.json").then(
                     (module: BeachballChangelog) => {
                         return module;
                     }
                 ),
-                import("../generated/fast-tooling-react-package-changes.json").then(
+                import("../../generated/fast-tooling-react-package-changes.json").then(
                     (module: BeachballChangelog) => {
                         return module;
                     }
                 ),
-                import("../generated/fast-tooling-package-changes.json").then(
+                import("../../generated/fast-tooling-package-changes.json").then(
                     (module: BeachballChangelog) => {
                         return module;
                     }
