@@ -85,7 +85,7 @@ module.exports = {
                 {
                     from: path.resolve(
                         __dirname,
-                        "./site-utilities/statics/assets/favicon.ico"
+                        "./assets/favicon.ico"
                     ),
                     to: outDir,
                 },
