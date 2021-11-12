@@ -1,11 +1,12 @@
 import { uniqueId } from "lodash-es";
-import { fastComponentSchemas, textSchema } from "../../site-utilities";
+import { textSchema } from "../native/library.native.schemas";
 import {
     heading2Example,
     imageExample,
     paragraphExample,
 } from "../native/library.native.examples";
 import { longExampleText, shortExampleText } from "../constants";
+import { fastComponentSchemas } from "./library.fast.schemas";
 import {
     fastAnchorTag,
     fastBadgeTag,

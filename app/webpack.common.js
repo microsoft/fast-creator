@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const manifest = require("./site-utilities/curated-html.json").join("");
+const manifest = require("./curated-html.json").join("");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const appDir = path.resolve(__dirname, "./");

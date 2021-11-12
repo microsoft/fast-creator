@@ -1,6 +1,7 @@
 import { uniqueId } from "lodash-es";
-import { fluentUIComponentSchemas, textSchema } from "../../site-utilities";
+import { textSchema } from "../native/library.native.schemas";
 import { longExampleText, shortExampleText } from "../constants";
+import { fluentUIComponentSchemas } from "./library.fluent-ui.schemas";
 import {
     fluentAnchorTag,
     fluentBadgeTag,
