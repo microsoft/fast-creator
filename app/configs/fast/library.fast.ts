@@ -2,8 +2,8 @@ import {
     VSCodeNativeHTMLDefinition,
     VSCodeNativeHTMLTag,
 } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
-import { fastComponentDefinitions, fastComponentSchemas } from "../../site-utilities";
 import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
+import { fastComponentDefinitions, fastComponentSchemas } from "./library.fast.schemas";
 import {
     fastAnchorExample,
     fastBadgeExample,
@@ -52,11 +52,12 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
+import { fastLibraryName } from "./library.fast.schemas";
 
 export const fastComponentId = "fast-components";
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
     id: fastComponentId,
-    displayName: "FAST Components",
+    displayName: `${fastLibraryName} Components`,
     optional: true,
     import: async () => {
         await import("./library.fast.import");

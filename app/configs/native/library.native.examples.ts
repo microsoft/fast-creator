@@ -1,5 +1,6 @@
-import { nativeElementSchemas, textSchema } from "../../site-utilities";
 import { longExampleText, shortExampleText } from "../constants";
+import { nativeElementSchemas } from "./library.native.schemas";
+import { textSchema } from "./library.native.schemas";
 import {
     buttonTag,
     divTag,
