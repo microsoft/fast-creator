@@ -49,6 +49,9 @@ jobs:
     - name: Run FAST Tooling dependency version update
       run: npm run update:tooling-versions
 
+    - name: Install
+      run: npm ci
+
     - name: Build
       run: npm run build
 
