@@ -43,16 +43,10 @@ app.use("/", express.static(publicDir));
 // Set fallback application options
 app.use(fallback("index.html", { root: publicDir }));
 
-// Manage search engine crawlers if staging add robots.txt, otherwise delete
-if (process.env.WEBSITE_HOSTNAME.indexOf("-stage") > -1) {
-    fs.writeFile("robots.txt", "User-agent: *\r\nDisallow: /", function (err) {
-        if (err) throw err;
-    });
-} else {
-    fs.unlink("robots.txt", function (err) {
-        if (err) throw err;
-    });
-}
+// Manage search engine crawlers, never crawl while private
+fs.writeFile("robots.txt", "User-agent: *\r\nDisallow: /", function (err) {
+    if (err) throw err;
+});
 
 // Serve up application on specified port
 var port = process.env.PORT || 7001;
