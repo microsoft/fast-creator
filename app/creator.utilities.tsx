@@ -53,16 +53,31 @@ abstract class CreatorUtilities<
     public paneEndClassNames: string = "pane pane__end";
     public viewerClassNames: string = "preview";
     public canvasContentClassNames: string = "canvas-content";
-    public menuItemRegionClassNames: string = "menu-item-region";
-    public canvasMenuBarClassNames: string = "canvas-menu-bar";
-    public mobileMenuBarClassNames: string = "mobile-menu-bar";
+    public canvasContentDevToolsHiddenModifierClassName: string =
+        "canvas-content__devToolsHidden";
+    public canvasContentPreviewModifierClassName: string = "canvas-content__preview";
+    public canvasMenuBarClassNames: string = "canvasMenuBar";
+    public mobileMenuBarClassNames: string = "mobileMenuBar";
     public logoClassNames: string = "logo";
-    public navigationClassNames: string = "navigation";
     public navigationRegionClassNames: string = "navigationRegion";
     public canvasClassNames: string = "canvas";
-    public menuBarClassNames: string = "menu-bar";
+    public menuBarRegionClassNames: string = "menuBarRegion";
     public editorRegionClassNames: string = "editorRegion";
-    public canvasMenuBarConfiguration: string = "canvasMenuBar-configuration";
+    public canvasMenuBarConfigurationClassNames: string = "canvasMenuBar-configuration";
+    public paneTriggerClassNames: string = "pane-trigger";
+    public canvasOverlayClassNames: string = "canvas-overlay";
+    public canvasOverlayActiveModifierClassName: string = "canvas-overlay__active";
+    public containerClassNames: string = "container";
+    public containerFormVisibleModifierClassName: string = "container__formVisible";
+    public containerNavigationVisibleModifierClassName: string =
+        "container__navigationVisible";
+    public containerInteractiveModifierClassName: string = "container__interactive";
+    public containerPreviewModifierClassName: string = "container__preview";
+    public devToolsClassNames: string = "devTools";
+    public devToolsPreviewModifierClassName: string = "devTools__preview";
+    public devToolsToggleClassNames: string = "devToolsToggle";
+    public whatsNewDialogClassNames: string = "whatsNew-dialog";
+    public whatsNewVersionClassNames: string = "whatsNew-versions";
     private adapter: MonacoAdapter;
     private monacoEditorModel: monaco.editor.ITextModel;
     private firstRun: boolean = true;
@@ -263,22 +278,49 @@ abstract class CreatorUtilities<
 
     public getContainerClassNames(): string {
         return classNames(
-            "container",
-            ["container__form-visible", this.state.mobileFormVisible],
-            ["container__navigation-visible", this.state.mobileNavigationVisible],
+            this.containerClassNames,
+            [this.containerFormVisibleModifierClassName, this.state.mobileFormVisible],
             [
-                "container__interactive",
+                this.containerNavigationVisibleModifierClassName,
+                this.state.mobileNavigationVisible,
+            ],
+            [
+                this.containerInteractiveModifierClassName,
                 this.state.displayMode === DisplayMode.interactive,
             ],
-            ["container__preview", this.state.displayMode === DisplayMode.preview]
+            [
+                this.containerPreviewModifierClassName,
+                this.state.displayMode === DisplayMode.preview,
+            ]
         );
     }
 
     public getCanvasOverlayClassNames(): string {
-        return classNames("canvas-overlay", [
-            "canvas-overlay__active",
+        return classNames(this.canvasOverlayClassNames, [
+            this.canvasOverlayActiveModifierClassName,
             this.state.mobileFormVisible || this.state.mobileNavigationVisible,
         ]);
+    }
+
+    public getDevToolsClassNames(): string {
+        return classNames(this.devToolsClassNames, [
+            this.devToolsPreviewModifierClassName,
+            this.state.displayMode === DisplayMode.preview,
+        ]);
+    }
+
+    public getCanvasContentClassNames(): string {
+        return classNames(
+            this.canvasContentClassNames,
+            [
+                this.canvasContentDevToolsHiddenModifierClassName,
+                !this.state.devToolsVisible,
+            ],
+            [
+                this.canvasContentPreviewModifierClassName,
+                this.state.displayMode === DisplayMode.preview,
+            ]
+        );
     }
 
     public handleCanvasOverlayTrigger = (): void => {
@@ -374,7 +416,7 @@ abstract class CreatorUtilities<
     public renderMobileNavigationTrigger(): React.ReactNode {
         return (
             <button
-                className={"mobile-pane-trigger"}
+                className={this.paneTriggerClassNames}
                 onClick={this.handleMobileNavigationTrigger}
             >
                 <svg
@@ -395,7 +437,7 @@ abstract class CreatorUtilities<
     public renderMobileFormTrigger(): React.ReactNode {
         return (
             <button
-                className={"mobile-pane-trigger"}
+                className={this.paneTriggerClassNames}
                 onClick={this.handleMobileFormTrigger}
             >
                 <svg

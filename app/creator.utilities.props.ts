@@ -18,6 +18,11 @@ export interface CreatorUtilitiesState {
     activeDictionaryId: string;
 
     /**
+     * Dev tools visible
+     */
+    devToolsVisible: boolean;
+
+    /**
      * The display mode
      */
     displayMode: DisplayMode;
