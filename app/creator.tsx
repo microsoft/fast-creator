@@ -251,9 +251,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                     showWhatsNew={this.state.showWhatsNewDialog}
                     updateWhatsNewVisibility={this.handleWhatsNewOverlay}
                 />
-                <div
-                    className={this.getContainerClassNames()}
-                >
+                <div className={this.getContainerClassNames()}>
                     <div className={this.paneStartClassNames}>
                         <Logo
                             className={this.logoClassNames}

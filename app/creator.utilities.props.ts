@@ -20,7 +20,7 @@ export interface CreatorUtilitiesState {
     /**
      * The display mode
      */
-     displayMode: DisplayMode;
+    displayMode: DisplayMode;
 
     /**
      * The last value that was changed from the data dictionary to

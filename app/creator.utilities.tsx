@@ -266,7 +266,10 @@ abstract class CreatorUtilities<
             "container",
             ["container__form-visible", this.state.mobileFormVisible],
             ["container__navigation-visible", this.state.mobileNavigationVisible],
-            ["container__interactive", this.state.displayMode === DisplayMode.interactive],
+            [
+                "container__interactive",
+                this.state.displayMode === DisplayMode.interactive,
+            ],
             ["container__preview", this.state.displayMode === DisplayMode.preview]
         );
     }
