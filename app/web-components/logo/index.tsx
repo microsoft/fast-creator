@@ -1,14 +1,8 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
 import React, { useEffect, useState } from "react";
-import { fastBadge } from "@microsoft/fast-components";
 import h from "../pragma";
 import { LogoProps } from "./logo.props";
-
-/**
- * Ensure tree-shaking doesn't remove these components from the bundle
- */
-fastBadge;
 
 const backgroundStyle = {
     display: "flex",
