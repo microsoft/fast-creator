@@ -25,32 +25,31 @@ import {
 } from "@microsoft/fast-tooling";
 import { DesignSystem } from "@microsoft/fast-foundation";
 
-/**
- * Ensure tree-shaking doesn't remove these components from the bundle
- */
-DesignSystem.getOrCreate().register(
-    fastBadge(),
-    fastButton(),
-    fastCheckbox(),
-    fastDialog(),
-    fastNumberField(),
-    fastOption(),
-    fastSelect(),
-    fastSlider(),
-    fastSliderLabel(),
-    fastSwitch(),
-    fastTabs(),
-    fastTab(),
-    fastTabPanel(),
-    fastTextField(),
-    fastTooltip(),
-    fastToolingColorPicker({ prefix: "fast-tooling" }),
-    fastToolingCSSLayout({ prefix: "fast-tooling" }),
-    fastToolingFile({ prefix: "fast-tooling" }),
-    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" }),
-    fastToolingUnitsTextField({ prefix: "fast-tooling" }),
-    fastToolingCSSBoxModel({ prefix: "fast-tooling" })
-);
+export function registerWebComponents(): void {
+    DesignSystem.getOrCreate().register(
+        fastBadge(),
+        fastButton(),
+        fastCheckbox(),
+        fastDialog(),
+        fastNumberField(),
+        fastOption(),
+        fastSelect(),
+        fastSlider(),
+        fastSliderLabel(),
+        fastSwitch(),
+        fastTabs(),
+        fastTab(),
+        fastTabPanel(),
+        fastTextField(),
+        fastTooltip(),
+        fastToolingColorPicker({ prefix: "fast-tooling" }),
+        fastToolingCSSLayout({ prefix: "fast-tooling" }),
+        fastToolingFile({ prefix: "fast-tooling" }),
+        fastToolingFileActionObjectUrl({ prefix: "fast-tooling" }),
+        fastToolingUnitsTextField({ prefix: "fast-tooling" }),
+        fastToolingCSSBoxModel({ prefix: "fast-tooling" })
+    );
+}
 
 export * from "./css-box-model";
 export * from "./css-layout";
