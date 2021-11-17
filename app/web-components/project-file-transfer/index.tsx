@@ -1,12 +1,9 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
 import React from "react";
-import { fastButton } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "../../icons";
 import h from "../pragma";
 import { ProjectFileTransferProps } from "./project-file-transfer.props";
-
-fastButton;
 
 export const ProjectFileTransfer: React.FC<ProjectFileTransferProps> = ({
     projectFile,
