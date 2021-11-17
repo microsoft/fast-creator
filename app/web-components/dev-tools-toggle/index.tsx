@@ -3,7 +3,11 @@ import React from "react";
 import h from "../pragma";
 import { downChevron, upChevron } from "../../icons";
 
-export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
+export function renderDevToolToggle(
+    selected: boolean,
+    onToggleCallback: () => void,
+    className: string
+) {
     return (
         <fast-button
             events={{
@@ -11,7 +15,7 @@ export function renderDevToolToggle(selected: boolean, onToggleCallback: () => v
                     onToggleCallback();
                 },
             }}
-            className={"dev-tools-trigger"}
+            className={className}
         >
             {selected ? downChevron() : upChevron()}
         </fast-button>

@@ -1,10 +1,9 @@
 import { memoize } from "lodash-es";
 import rafThrottle from "raf-throttle";
-import { classNames, Direction } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
-    fastToolingColorPicker,
     htmlRenderOriginatorId,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
@@ -28,20 +27,8 @@ import {
     ControlOnChangeConfig,
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     baseLayerLuminance,
-    fastBadge,
-    fastCheckbox,
-    fastNumberField,
-    fastOption,
-    fastSelect,
-    fastSlider,
-    fastSliderLabel,
-    fastTab,
-    fastTabPanel,
-    fastTabs,
-    fastTextField,
     fillColor,
     StandardLuminance,
     SwatchRGB,
@@ -236,6 +223,8 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                     updateWhatsNewAvailability={this.updateWhatsNewAvailability}
                     showWhatsNew={this.state.showWhatsNewDialog}
                     updateWhatsNewVisibility={this.handleWhatsNewOverlay}
+                    dialogClassName={this.whatsNewDialogClassNames}
+                    versionClassName={this.whatsNewVersionClassNames}
                 />
                 <div className={this.getContainerClassNames()}>
                     <div className={this.paneStartClassNames}>
@@ -267,7 +256,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                     </div>
                     <div className={this.canvasClassNames}>
                         {this.renderCanvasOverlay()}
-                        <div className={this.menuBarClassNames}>
+                        <div className={this.menuBarRegionClassNames}>
                             <div className={this.mobileMenuBarClassNames}>
                                 {this.renderMobileNavigationTrigger()}
                                 <Logo
@@ -292,7 +281,9 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                                     onDimensionChange={this.handleDimensionChange}
                                     disabled={!this.state.previewReady}
                                 />
-                                <div className={this.canvasMenuBarConfiguration}>
+                                <div
+                                    className={this.canvasMenuBarConfigurationClassNames}
+                                >
                                     {renderPreviewSwitch(
                                         this.state.displayMode === DisplayMode.preview,
                                         this.handlePreviewModeSwitch,
@@ -327,19 +318,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                                 </div>
                             </div>
                         </div>
-                        <div
-                            className={classNames(
-                                this.canvasContentClassNames,
-                                [
-                                    "canvas-content__dev-tools-hidden",
-                                    !this.state.devToolsVisible,
-                                ],
-                                [
-                                    "canvas-content__preview",
-                                    this.state.displayMode === DisplayMode.preview,
-                                ]
-                            )}
-                        >
+                        <div className={this.getCanvasContentClassNames()}>
                             <div
                                 ref={this.viewerContainerRef}
                                 className={this.viewerClassNames}
@@ -360,19 +339,15 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                                     }
                                 />
                             </div>
-                            <div
-                                className={classNames("dev-tools", [
-                                    "preview",
-                                    this.state.displayMode === DisplayMode.preview,
-                                ])}
-                            >
+                            <div className={this.getDevToolsClassNames()}>
                                 <div
                                     ref={this.editorContainerRef}
                                     className={this.editorRegionClassNames}
                                 />
                                 {renderDevToolToggle(
                                     this.state.devToolsVisible,
-                                    this.handleDevToolsToggle
+                                    this.handleDevToolsToggle,
+                                    this.devToolsToggleClassNames
                                 )}
                             </div>
                         </div>

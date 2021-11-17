@@ -59,7 +59,7 @@ function renderWhatsNewInVersion(
     return (
         <div>
             <h4>{version}</h4>
-            <ul className={"entries"}>
+            <ul>
                 {versionComments.map((versionComment: VersionComment, index: number) => {
                     return <li key={"version" + index}>{versionComment.comment}</li>;
                 })}
@@ -68,9 +68,13 @@ function renderWhatsNewInVersion(
     );
 }
 
-function getWhatsNewDialogContent(changes: BeachballChangelog[]): JSX.Element {
+function getWhatsNewDialogContent(
+    changes: BeachballChangelog[],
+    dialogClassName: string,
+    versionClassName: string
+): JSX.Element {
     return (
-        <div className={"dialog"}>
+        <div className={dialogClassName}>
             <h2>Recent Updates</h2>
             {changes.map(
                 (value: BeachballChangelog): JSX.Element => {
@@ -79,7 +83,7 @@ function getWhatsNewDialogContent(changes: BeachballChangelog[]): JSX.Element {
                             <fast-badge fill="primary" color="primary">
                                 {value.name}
                             </fast-badge>
-                            <ul className={"versions"}>
+                            <ul className={versionClassName}>
                                 {value.entries.map(entry => {
                                     return (
                                         <li key={entry.version}>
@@ -120,6 +124,8 @@ interface WhatsNewDialogProps {
     userToolingReactVersion: string | null;
     userToolingVersion: string | null;
     showWhatsNew: boolean;
+    dialogClassName: string;
+    versionClassName: string;
     updateWhatsNewAvailability: (whatsNew: boolean) => void;
     updateWhatsNewVisibility: (e: any) => void;
 }
@@ -133,7 +139,9 @@ export class WhatsNewDialog extends React.Component<WhatsNewDialogProps, {}> {
         renderWhatsNewDialog(
             this.props.userToolingVersion,
             this.props.userToolingReactVersion,
-            this.props.userCreatorVersion
+            this.props.userCreatorVersion,
+            this.props.dialogClassName,
+            this.props.versionClassName
         ).then(content => {
             this.dialogContent = content;
             this.props.updateWhatsNewAvailability(!!content);
@@ -155,7 +163,9 @@ export class WhatsNewDialog extends React.Component<WhatsNewDialogProps, {}> {
 export function renderWhatsNewDialog(
     userToolingVersion: XOR<string, null>,
     userToolingReactVersion: XOR<string, null>,
-    userCreatorVersion: XOR<string, null>
+    userCreatorVersion: XOR<string, null>,
+    dialogClassName: string,
+    versionClassName: string
 ): Promise<void | JSX.Element> {
     return import("../../generated/current-version.json")
         .then((module: CurrentVersions) => {
@@ -204,7 +214,11 @@ export function renderWhatsNewDialog(
                         return;
                     }
 
-                    return getWhatsNewDialogContent(changes);
+                    return getWhatsNewDialogContent(
+                        changes,
+                        dialogClassName,
+                        versionClassName
+                    );
                 })
                 .catch(err => {
                     return (
