@@ -91,20 +91,6 @@ import { fluentUIComponentId } from "./configs/fluent-ui";
 import { WindowMessage } from "./window-message";
 import { CreatorUtilities } from "./creator.utilities";
 
-DesignSystem.getOrCreate().register(
-    fastBadge(),
-    fastCheckbox(),
-    fastNumberField(),
-    fastOption(),
-    fastSelect(),
-    fastSlider(),
-    fastSliderLabel(),
-    fastTabs(),
-    fastTab(),
-    fastTabPanel(),
-    fastTextField(),
-    fastToolingColorPicker({ prefix: "fast-tooling" })
-);
 baseLayerLuminance.setValueFor(document.body, StandardLuminance.DarkMode);
 fillColor.setValueFor(
     document.body,

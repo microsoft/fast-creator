@@ -1,13 +1,9 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
 import React from "react";
-import { fastButton, fastNumberField } from "@microsoft/fast-components";
 import { RotateGlyph } from "../../icons";
 import h from "../pragma";
 import { DimensionProps } from "./dimension.props";
-
-fastButton;
-fastNumberField;
 
 export const Dimension: React.FC<DimensionProps> = ({
     width,
