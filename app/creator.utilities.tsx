@@ -25,7 +25,7 @@ import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
-import { rootOriginatorId } from "./utilities";
+import { DisplayMode, rootOriginatorId } from "./utilities";
 import { CreatorUtilitiesState } from "./creator.utilities.props";
 
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -58,8 +58,11 @@ abstract class CreatorUtilities<
     public mobileMenuBarClassNames: string = "mobile-menu-bar";
     public logoClassNames: string = "logo";
     public navigationClassNames: string = "navigation";
+    public navigationRegionClassNames: string = "navigationRegion";
     public canvasClassNames: string = "canvas";
     public menuBarClassNames: string = "menu-bar";
+    public editorRegionClassNames: string = "editorRegion";
+    public canvasMenuBarConfiguration: string = "canvasMenuBar-configuration";
     private adapter: MonacoAdapter;
     private monacoEditorModel: monaco.editor.ITextModel;
     private firstRun: boolean = true;
@@ -262,7 +265,12 @@ abstract class CreatorUtilities<
         return classNames(
             "container",
             ["container__form-visible", this.state.mobileFormVisible],
-            ["container__navigation-visible", this.state.mobileNavigationVisible]
+            ["container__navigation-visible", this.state.mobileNavigationVisible],
+            [
+                "container__interactive",
+                this.state.displayMode === DisplayMode.interactive,
+            ],
+            ["container__preview", this.state.displayMode === DisplayMode.preview]
         );
     }
 

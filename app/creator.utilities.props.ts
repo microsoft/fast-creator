@@ -1,6 +1,7 @@
 import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { DisplayMode } from "./utilities/shared";
 
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface CreatorUtilitiesState {
@@ -15,6 +16,11 @@ export interface CreatorUtilitiesState {
     transparentBackground: boolean;
     previewReady: boolean;
     activeDictionaryId: string;
+
+    /**
+     * The display mode
+     */
+    displayMode: DisplayMode;
 
     /**
      * The last value that was changed from the data dictionary to

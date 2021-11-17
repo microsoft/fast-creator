@@ -4,7 +4,6 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
-    DataDictionary,
     fastToolingColorPicker,
     htmlRenderOriginatorId,
     MessageSystemDataTypeAction,
@@ -127,7 +126,6 @@ const schemaDictionaryWithDesignTokens: SchemaDictionary = {
     [fluentDesignTokensSchema.id]: fluentDesignTokensSchema,
 };
 
-export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
 
 class Creator extends CreatorUtilities<{}, CreatorState> {
@@ -253,15 +251,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                     showWhatsNew={this.state.showWhatsNewDialog}
                     updateWhatsNewVisibility={this.handleWhatsNewOverlay}
                 />
-                <div
-                    className={this.getContainerClassNames()}
-                    style={{
-                        gridTemplateColumns:
-                            this.state.displayMode === DisplayMode.interactive
-                                ? undefined
-                                : "0px auto 0px",
-                    }}
-                >
+                <div className={this.getContainerClassNames()}>
                     <div className={this.paneStartClassNames}>
                         <Logo
                             className={this.logoClassNames}
@@ -275,7 +265,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                             }
                             whatsNewAvailable={this.state.whatsNewAvailable}
                         />
-                        <div style={{ height: "calc(100% - 48px)" }}>
+                        <div className={this.navigationRegionClassNames}>
                             {renderNavigationTabs(
                                 this.state.activeNavigationId,
                                 this.fastMessageSystem,
@@ -316,12 +306,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                                     onDimensionChange={this.handleDimensionChange}
                                     disabled={!this.state.previewReady}
                                 />
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        marginLeft: "auto",
-                                    }}
-                                >
+                                <div className={this.canvasMenuBarConfiguration}>
                                     {renderPreviewSwitch(
                                         this.state.displayMode === DisplayMode.preview,
                                         this.handlePreviewModeSwitch,
@@ -397,7 +382,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                             >
                                 <div
                                     ref={this.editorContainerRef}
-                                    style={{ height: "100%", paddingTop: "24px" }}
+                                    className={this.editorRegionClassNames}
                                 />
                                 {renderDevToolToggle(
                                     this.state.devToolsVisible,

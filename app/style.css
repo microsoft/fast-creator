@@ -95,6 +95,10 @@ h6 {
     grid-column-start: 3;
 }
 
+.navigationRegion {
+    height: calc(100% - 48px);
+}
+
 .navigation {
     height: auto !important;
 }
@@ -103,6 +107,10 @@ h6 {
     display: grid;
     background: var(--container-background);
     grid-template-columns: 300px auto 300px;
+}
+
+.container.container__preview {
+    grid-template-columns: 0px auto 0px;
 }
 
 .canvas {
@@ -143,6 +151,11 @@ h6 {
     padding: 8px 14px;
 }
 
+.canvasMenuBar-configuration {
+    display: flex;
+    margin-left: auto;
+}
+
 .menu-item-region {
     display: flex;
 }
@@ -150,6 +163,11 @@ h6 {
 .preview {
     grid-row-start: 1;
     position: relative;
+}
+
+.editorRegion {
+    height: 100%;
+    padding-top: 24px;
 }
 
 .dev-tools {
@@ -187,8 +205,7 @@ h6 {
     height: 14px;
 }
 
-.preview .dev-tools-trigger
-{
+.preview .dev-tools-trigger {
     display: none;
 }
 
