@@ -1,21 +1,29 @@
+import React from "react";
+import ReactDOM from "react-dom";
 import { memoize } from "lodash-es";
 import rafThrottle from "raf-throttle";
 import { Direction } from "@microsoft/fast-web-utilities";
-import React from "react";
+import { VSCodeNativeHTMLDefinition } from "@microsoft/fast-tooling/dist/esm/definitions/native/html-native.vs-code-v1.1-types";
+import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
 import {
+    AjvMapper,
     CustomMessageIncomingOutgoing,
+    DataDictionary,
     htmlRenderOriginatorId,
+    MessageSystem,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
+    MonacoAdapter,
+    MonacoAdapterAction,
+    MonacoAdapterActionCallbackConfig,
     monacoAdapterId,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
     ControlType,
-    defaultDevices,
     Display,
     LinkedDataControl,
     ModularViewer,
@@ -37,7 +45,10 @@ import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/te
 import {
     findDictionaryIdByMonacoEditorHTMLPosition,
     findMonacoEditorHTMLPositionByDictionaryId,
+    mapDataDictionaryToMonacoEditorHTML,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
+import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import packageJson from "../package.json";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
@@ -101,13 +112,20 @@ const schemaDictionaryWithDesignTokens: SchemaDictionary = {
 
 export const defaultElementDataId: string = "root";
 
+const fastMessageSystemWorker = new FASTMessageSystemWorker();
+const fastDesignMessageSystemWorker = new FASTMessageSystemWorker();
+
 class Creator extends CreatorUtilities<{}, CreatorState> {
     public static displayName: string = "Creator";
+    private adapter: MonacoAdapter;
+    private monacoEditorModel: monaco.editor.ITextModel;
+    private firstRun: boolean = true;
+    private positionUpdateTimeout: XOR<number, NodeJS.Timer>;
 
     public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     public editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private windowResizing: number;
-    private devices: Device[];
+
     private linkedDataControl = new StandardControlPlugin({
         type: ControlType.linkedData,
         context: ControlContext.fill,
@@ -138,7 +156,42 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
     constructor(props: {}) {
         super(props);
 
-        this.devices = this.getDevices();
+        if ((window as any).Worker) {
+            this.fastMessageSystem = new MessageSystem({
+                webWorker: fastMessageSystemWorker,
+            });
+            this.fastDesignMessageSystem = new MessageSystem({
+                webWorker: fastDesignMessageSystemWorker,
+            });
+            new AjvMapper({
+                messageSystem: this.fastDesignMessageSystem,
+            });
+            new AjvMapper({
+                messageSystem: this.fastMessageSystem,
+            });
+        }
+
+        this.monacoValue = [];
+
+        this.adapter = new MonacoAdapter({
+            messageSystem: this.fastMessageSystem,
+            actions: [
+                new MonacoAdapterAction({
+                    id: "monaco.setValue",
+                    action: (config: MonacoAdapterActionCallbackConfig): void => {
+                        // trigger an update to the monaco value that
+                        // also updates the DataDictionary which fires a
+                        // postMessage to the MessageSystem if the update
+                        // is coming from Monaco and not a data dictionary update
+                        config.updateMonacoModelValue(
+                            [html_beautify(this.monacoValue.join(""))],
+                            this.state.lastMappedDataDictionaryToMonacoEditorHTMLValue ===
+                                this.monacoValue[0]
+                        );
+                    },
+                }),
+            ],
+        });
 
         if ((window as any).Worker) {
             this.fastMessageSystem.add({ onMessage: this.handleMessageSystem });
@@ -195,7 +248,6 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                 defaultElementDataId,
             ],
             schemaDictionary: schemaDictionaryWithNativeElements,
-            transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
             displayMode: DisplayMode.interactive,
             whatsNewAvailable: false,
@@ -226,7 +278,13 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                     dialogClassName={this.whatsNewDialogClassNames}
                     versionClassName={this.whatsNewVersionClassNames}
                 />
-                <div className={this.getContainerClassNames()}>
+                <div
+                    className={this.getContainerClassNames(
+                        this.state.mobileFormVisible,
+                        this.state.mobileNavigationVisible,
+                        this.state.displayMode
+                    )}
+                >
                     <div className={this.paneStartClassNames}>
                         <Logo
                             className={this.logoClassNames}
@@ -318,7 +376,12 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                                 </div>
                             </div>
                         </div>
-                        <div className={this.getCanvasContentClassNames()}>
+                        <div
+                            className={this.getCanvasContentClassNames(
+                                this.state.devToolsVisible,
+                                this.state.displayMode
+                            )}
+                        >
                             <div
                                 ref={this.viewerContainerRef}
                                 className={this.viewerClassNames}
@@ -339,7 +402,11 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
                                     }
                                 />
                             </div>
-                            <div className={this.getDevToolsClassNames()}>
+                            <div
+                                className={this.getDevToolsClassNames(
+                                    this.state.displayMode
+                                )}
+                            >
                                 <div
                                     ref={this.editorContainerRef}
                                     className={this.editorRegionClassNames}
@@ -459,6 +526,41 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
         };
     };
 
+    public handleCanvasOverlayTrigger = (): void => {
+        this.setState({
+            mobileFormVisible: false,
+            mobileNavigationVisible: false,
+        });
+    };
+
+    public handleMobileNavigationTrigger = (): void => {
+        this.setState({
+            mobileNavigationVisible: true,
+        });
+    };
+
+    public handleMobileFormTrigger = (): void => {
+        this.setState({
+            mobileFormVisible: true,
+        });
+    };
+
+    public handleUpdateHeight = (updatedHeight: number): void => {
+        this.setState({
+            viewerHeight:
+                updatedHeight > this.maxViewerHeight
+                    ? this.maxViewerHeight
+                    : updatedHeight,
+        });
+    };
+
+    public handleUpdateWidth = (updatedWidth: number): void => {
+        this.setState({
+            viewerWidth:
+                updatedWidth > this.maxViewerWidth ? this.maxViewerWidth : updatedWidth,
+        });
+    };
+
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<CreatorState> = {};
         if (
@@ -573,7 +675,11 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
             this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 data: projectFile.dataDictionary,
-                schemaDictionary: this.getLibrarySchemas(projectFile.addedLibraries),
+                schemaDictionary: this.getLibrarySchemas(
+                    projectFile.addedLibraries,
+                    schemaDictionaryWithNativeElements,
+                    elementLibraries
+                ),
             })
         );
     };
@@ -611,37 +717,6 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
             this.editor.layout();
         }
     };
-
-    private getLibrarySchemas(addedLibraries: string[]): SchemaDictionary {
-        const schemaDictionary: SchemaDictionary = schemaDictionaryWithNativeElements;
-
-        addedLibraries.forEach((libraryId: string) => {
-            Object.values(elementLibraries[libraryId].componentDictionary).forEach(
-                componentDictionaryItem => {
-                    schemaDictionary[(componentDictionaryItem.schema as any).$id] =
-                        componentDictionaryItem.schema;
-                }
-            );
-        });
-
-        return schemaDictionary;
-    }
-
-    private getDevices(): Device[] {
-        return defaultDevices.concat({
-            id: "desktop",
-            displayName: "Desktop (1920x1080)",
-            display: Display.fixed,
-            width: 1920,
-            height: 1080,
-        });
-    }
-
-    private getDeviceById(id: string): Device | void {
-        return this.devices.find((device: Device): boolean => {
-            return device.id === id;
-        });
-    }
 
     private handleUpdateDevice = (deviceId: string): void => {
         const device: Device | void = this.getDeviceById(deviceId);
@@ -822,6 +897,213 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
             }
         );
     };
+
+    public setupMonacoEditor = (monacoRef: any): void => {
+        monacoRef.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
+            this.monacoEditorModel = monacoRef.editor.getModel(
+                listener.uri
+            ) as monaco.editor.ITextModel;
+
+            this.monacoEditorModel.onDidChangeContent(
+                (e: monaco.editor.IModelContentChangedEvent) => {
+                    /**
+                     * Sets the value to be used by monaco
+                     */
+                    if (this.state.previewReady) {
+                        const modelValue = this.monacoEditorModel.getValue();
+                        this.monacoValue = Array.isArray(modelValue)
+                            ? modelValue
+                            : [modelValue];
+
+                        if (!this.firstRun) {
+                            this.adapter.action("monaco.setValue").run();
+                        }
+
+                        this.firstRun = false;
+                    }
+                }
+            );
+        });
+    };
+
+    public updateMonacoEditorHTMLElementDefinitions = (
+        monacoRef: any,
+        componentDefinitions: VSCodeNativeHTMLDefinition[]
+    ): void => {
+        monacoRef.languages.html.htmlDefaults.setOptions({
+            data: {
+                useDefaultDataProvider: false,
+                dataProviders: componentDefinitions,
+            },
+        });
+    };
+
+    public createMonacoEditor = (
+        monacoRef: any,
+        alternateContainerRef?: HTMLElement,
+        editorOptions?: any
+    ): void => {
+        if ((alternateContainerRef || this.editorContainerRef.current) && !this.editor) {
+            this.editor = monacoRef.editor.create(
+                alternateContainerRef
+                    ? alternateContainerRef
+                    : this.editorContainerRef.current,
+                {
+                    value: "",
+                    language: "html",
+                    formatOnPaste: true,
+                    lineNumbers: "off",
+                    theme: "vs-dark",
+                    wordWrap: "on",
+                    wordWrapColumn: 80,
+                    wordWrapMinified: true,
+                    wrappingIndent: "same",
+                    minimap: {
+                        showSlider: "mouseover",
+                    },
+                    ...editorOptions,
+                }
+            );
+            this.editor.onDidChangeCursorPosition(
+                (e: monaco.editor.ICursorPositionChangedEvent): void => {
+                    if (this.positionUpdateTimeout) {
+                        clearTimeout(this.positionUpdateTimeout as number);
+                    }
+
+                    this.positionUpdateTimeout = setTimeout(
+                        this.updateNavigation.bind(this, e),
+                        500
+                    );
+                }
+            );
+
+            this.updateEditorContent(this.state.dataDictionary);
+        }
+    };
+
+    public updateNavigation(e: monaco.editor.ICursorPositionChangedEvent) {
+        if (e.reason === 3 && Array.isArray(this.monacoValue) && this.monacoValue[0]) {
+            const dictionaryId = findDictionaryIdByMonacoEditorHTMLPosition(
+                e.position,
+                this.state.dataDictionary,
+                this.state.schemaDictionary,
+                this.monacoValue[0].split("\n")
+            );
+
+            if (dictionaryId !== this.state.activeDictionaryId) {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: dictionaryId,
+                    activeNavigationConfigId: "",
+                    options: {
+                        originatorId: rootOriginatorId,
+                    },
+                });
+            }
+        }
+    }
+
+    public updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
+        if (this.editor) {
+            const lastMappedDataDictionaryToMonacoEditorHTMLValue = html_beautify(
+                mapDataDictionaryToMonacoEditorHTML(
+                    dataDictionary,
+                    this.state.schemaDictionary
+                )
+            );
+
+            this.setState(
+                {
+                    lastMappedDataDictionaryToMonacoEditorHTMLValue,
+                },
+                () => {
+                    this.editor.setValue(lastMappedDataDictionaryToMonacoEditorHTMLValue);
+                }
+            );
+        }
+    }
+
+    public setViewerToFullSize(alternateContainerRef?: HTMLElement): void {
+        const viewerContainer: HTMLElement | null = alternateContainerRef
+            ? alternateContainerRef
+            : this.viewerContainerRef.current;
+
+        if (viewerContainer) {
+            /* eslint-disable-next-line react/no-find-dom-node */
+            const viewerNode: Element | Text | null = ReactDOM.findDOMNode(
+                viewerContainer
+            );
+
+            if (viewerNode instanceof Element) {
+                // 24 is height of view label
+                this.maxViewerHeight =
+                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2 - 24;
+                this.maxViewerWidth =
+                    viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
+
+                this.setState({
+                    viewerWidth: this.maxViewerWidth,
+                    viewerHeight: this.maxViewerHeight,
+                });
+            }
+        }
+    }
+
+    public renderCanvasOverlay(): React.ReactNode {
+        return (
+            <div
+                className={this.getCanvasOverlayClassNames(
+                    this.state.mobileFormVisible,
+                    this.state.mobileNavigationVisible
+                )}
+                onClick={this.handleCanvasOverlayTrigger}
+            ></div>
+        );
+    }
+
+    public renderMobileNavigationTrigger(): React.ReactNode {
+        return (
+            <button
+                className={this.paneTriggerClassNames}
+                onClick={this.handleMobileNavigationTrigger}
+            >
+                <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <rect width="16" height="1" rx="0.5" fill="white" />
+                    <rect y="7" width="16" height="1" rx="0.5" fill="white" />
+                    <rect y="14" width="16" height="1" rx="0.5" fill="white" />
+                </svg>
+            </button>
+        );
+    }
+
+    public renderMobileFormTrigger(): React.ReactNode {
+        return (
+            <button
+                className={this.paneTriggerClassNames}
+                onClick={this.handleMobileFormTrigger}
+            >
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M16.5253 1.47498C17.6898 2.63953 17.6898 4.52764 16.5253 5.69219L6.55167 15.6658C6.32095 15.8965 6.034 16.0631 5.71919 16.1489L1.45612 17.3116C0.989558 17.4388 0.56145 17.0107 0.688694 16.5441L1.85135 12.2811C1.93721 11.9663 2.10373 11.6793 2.33446 11.4486L12.3081 1.47498C13.4726 0.310424 15.3607 0.310424 16.5253 1.47498ZM11.5001 4.05073L3.21834 12.3325C3.14143 12.4094 3.08592 12.505 3.05731 12.61L2.18243 15.8178L5.3903 14.943C5.49523 14.9143 5.59088 14.8588 5.66779 14.7819L13.9493 6.4999L11.5001 4.05073ZM13.1919 2.35886L12.3835 3.16656L14.8326 5.61656L15.6414 4.80831C16.3178 4.13191 16.3178 3.03526 15.6414 2.35886C14.965 1.68246 13.8683 1.68246 13.1919 2.35886Z"
+                        fill="white"
+                    />
+                </svg>
+            </button>
+        );
+    }
 }
 
 export default Creator;
