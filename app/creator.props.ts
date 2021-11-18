@@ -121,11 +121,6 @@ export interface ProjectFile {
     schemaDictionary: SchemaDictionary;
 
     /**
-     * Preview background transparency
-     */
-    transparentBackground: boolean;
-
-    /**
      * The last mapped data dictionary to monaco editor value
      */
     lastMappedDataDictionaryToMonacoEditorHTMLValue: string;
