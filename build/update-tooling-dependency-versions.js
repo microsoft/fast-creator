@@ -160,8 +160,8 @@ async function updateDependencies () {
  */
 function pushToRemote() {
     const { remote, remoteBranch } = parseRemoteBranch(branch);
-    const pushArgs = ['push', '--no-verify', '--follow-tags', '--verbose', remote, `HEAD:${remoteBranch}`];
-    console.log(`git ${pushArgs.join(' ')}`);
+    const pushArgs = ["push", "--no-verify", "--follow-tags", "--verbose", remote, `HEAD:${remoteBranch}`];
+    console.log(`git ${pushArgs.join(" ")}`);
 
     const pushResult = git(pushArgs, { cwd });
 
