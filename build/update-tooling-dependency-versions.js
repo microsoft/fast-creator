@@ -2,14 +2,13 @@ const { exec } = require("child_process");
 const packageJson = require("../package.json");
 const fs = require("fs");
 const path = require("path");
-const { git, parseRemoteBranch } = require("workspace-tools");
+const { getDefaultRemoteBranch, git, parseRemoteBranch } = require("workspace-tools");
 
 const dependenciesToUpdate = [
     "@microsoft/fast-tooling",
     "@microsoft/fast-tooling-react"
 ];
 const cwd = path.resolve(__dirname);
-const branch = "stage";
 
 /**
  * Gets the latest version of the provided package name
@@ -159,7 +158,8 @@ async function updateDependencies () {
  * Pushes the local branch updates to the remote
  */
 function pushToRemote() {
-    const { remote, remoteBranch } = parseRemoteBranch(branch);
+    const defaultRemoteBranch = getDefaultRemoteBranch(undefined, cwd);
+    const { remote, remoteBranch } = parseRemoteBranch(defaultRemoteBranch);
     const pushArgs = ["push", "--no-verify", "--follow-tags", "--verbose", remote, `HEAD:${remoteBranch}`];
     console.log(`git ${pushArgs.join(" ")}`);
 
