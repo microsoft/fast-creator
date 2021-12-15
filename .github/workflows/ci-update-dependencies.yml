@@ -46,6 +46,9 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
 
+    - name: Install workspace tools
+      run: npm i workspace-tools@0.17.0
+
     - name: Run FAST Tooling dependency version update
       run: npm run update:tooling-versions
 
