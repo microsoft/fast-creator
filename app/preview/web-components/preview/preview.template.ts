@@ -19,7 +19,7 @@ export const previewTemplate: (
             <fast-tooling-html-render ${ref("renderRef")} scroll-into-view>
                 <fast-tooling-html-render-layer-navigation
                     role="htmlrenderlayer"
-                    resizeobserverselector="#root .preview"
+                    resize-observer-selector="#root .preview"
                 ></fast-tooling-html-render-layer-navigation>
                 <fast-tooling-html-render-layer-inline-edit
                     role="htmlrenderlayer"
