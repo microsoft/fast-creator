@@ -1,5 +1,5 @@
 # Welcome to FAST Creator 
-Application for UI testing and development.
+An open source application for UI testing and development based on the work from the FAST Tooling project.
 
 ## Overview
 The Creator is a React application that allows for editing web components and native HTML elements with a live preview. To accomplish this, the Creator utilizes the web worker Message System from the `@microsoft/fast-tooling` package and a series of components and services provided by both the `@microsoft/fast-tooling` and `@microsoft/fast-tooling-react` packages.
