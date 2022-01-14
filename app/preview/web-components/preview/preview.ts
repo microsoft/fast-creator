@@ -14,7 +14,6 @@ import {
     SchemaDictionary,
     UpdateDataMessageIncoming,
 } from "@microsoft/fast-tooling";
-import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { HTMLRender } from "@microsoft/fast-tooling/dist/dts/web-components/html-render/html-render";
 import { Direction } from "@microsoft/fast-web-utilities";
@@ -42,18 +41,24 @@ export class Preview extends FoundationElement {
     @observable
     public direction: Direction;
 
+    @observable
+    public messageSystem: MessageSystem;
+    private messageSystemChanged(): void {
+        if (this.messageSystem !== undefined) {
+            this.messageSystem.add({ onMessage: this.handleHtmlMessageSystem });
+        }
+    }
+
     /**
      * A reference to the internal input element
      * @internal
      */
     public renderRef: HTMLRender;
 
-    private htmlRenderMessageSystemWorker = new FASTMessageSystemWorker();
     private activeDictionaryId: string;
     private dataDictionary: DataDictionary<unknown> | void;
     private schemaDictionary: SchemaDictionary;
     private designSystemDataDictionary: DataDictionary<unknown> | void;
-    private htmlRenderMessageSystem: MessageSystem;
     private htmlRenderReady: boolean;
 
     constructor() {
@@ -63,15 +68,8 @@ export class Preview extends FoundationElement {
         this.dataDictionary = void 0;
         this.schemaDictionary = {};
         this.designSystemDataDictionary = void 0;
-        this.htmlRenderMessageSystem = new MessageSystem({
-            webWorker: this.htmlRenderMessageSystemWorker,
-        });
         this.htmlRenderReady = false;
         this.displayMode = DisplayMode.interactive;
-
-        this.htmlRenderMessageSystem.add({
-            onMessage: this.handleHtmlMessageSystem,
-        });
 
         window.addEventListener("message", this.handleMessage);
     }
@@ -94,7 +92,7 @@ export class Preview extends FoundationElement {
      */
     private attachMappedComponents(): void {
         if (this.renderRef !== null && !this.htmlRenderReady) {
-            (this.renderRef as any).messageSystem = this.htmlRenderMessageSystem;
+            (this.renderRef as any).messageSystem = this.messageSystem;
             (this.renderRef as any).markupDefinitions = {
                 ...fastComponentDefinitions,
                 ...fluentUIComponentDefinitions,
@@ -133,13 +131,13 @@ export class Preview extends FoundationElement {
     private attachComponentsAndInit(): void {
         this.attachMappedComponents();
         if (this.dataDictionary !== undefined) {
-            this.htmlRenderMessageSystem.postMessage({
+            this.messageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: this.dataDictionary,
                 schemaDictionary: this.schemaDictionary,
             });
             if (this.activeDictionaryId) {
-                this.htmlRenderMessageSystem.postMessage({
+                this.messageSystem.postMessage({
                     type: MessageSystemType.navigation,
                     action: MessageSystemNavigationTypeAction.update,
                     activeDictionaryId: this.activeDictionaryId,
@@ -154,7 +152,7 @@ export class Preview extends FoundationElement {
 
     private handleNavigation(): void {
         if (this.renderRef !== null) {
-            this.htmlRenderMessageSystem.postMessage({
+            this.messageSystem.postMessage({
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
                 activeDictionaryId: this.activeDictionaryId,
@@ -314,7 +312,7 @@ export class Preview extends FoundationElement {
                                         ? DisplayMode.preview
                                         : DisplayMode.interactive;
                                 this.displayMode = mode;
-                                this.htmlRenderMessageSystem.postMessage({
+                                this.messageSystem.postMessage({
                                     type: MessageSystemType.custom,
                                     options: {
                                         originatorId: creatorOriginatorId,
