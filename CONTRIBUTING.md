@@ -90,31 +90,9 @@ You can use any code editor you like when working with the FAST Creator monorepo
 
 Default VS Code settings for this project are configured as [Workspace settings](https://code.visualstudio.com/docs/getstarted/settings) in the `.vscode` directory. These settings override user settings for the workspace and are configured to ensure consistent code formatting across different environments. We also include a list of [Workspace recommended extensions](https://code.visualstudio.com/docs/editor/extension-marketplace#_workspace-recommended-extensions) for VS Code for syntax highlighting and code linting.
 
-## Contribution policy
+## FAST guidance
 
-A “Contribution” is work voluntarily submitted to a project. This submitted work can include code, documentation, design, answering questions, or submitting and triaging issues.
-
-Many contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to grant and do grant the rights to use your contribution. For details, visit [https://cla.microsoft.com](https://cla.microsoft.com).
-
-When you submit a pull request, a CLA-bot automatically determines if you need to provide a CLA and decorates the pull request appropriately (e.g., label, comment). Follow the instructions provided by the bot. You only need to do this once across all repositories using our CLA.
-
-## Governance
-
-### Owners
-
-*Owners* have admin access and are responsible for the management, maintenance, and operations of the FAST Creator repository.
-
-### Collaborators
-
-*Collaborators* have write access and have an active and sustained impact on the project and participate in triaging issues, reviewing code, mentoring, and working to improve the architectural quality.
-
-### Code owners
-
-As subject matter experts, *code owners* approve pull requests on the code sections they own. There is a required minimum of one code owner. *Code owners* are listed in [CODEOWNERS](https://github.com/microsoft/fast-creator/blob/main/.github/CODEOWNERS).
-
-### Contributors
-
-*Contributors* have read access and can be anyone who has contributed a completed pull request to the project.
+The FAST Creator project follows the contribution policy outlined in the FAST project for their [governance](https://github.com/microsoft/fast/blob/master/CONTRIBUTING.md#governance), and [stability policy](https://github.com/microsoft/fast/blob/master/CONTRIBUTING.md#stability-policy).
 
 ## Acceptance and consensus seeking process
 
@@ -127,7 +105,3 @@ Before a pull request is accepted, time should be given to receive input from *c
 Specific *collaborators* or *code owners*  can be added to a pull request by including their user alias.
 
 All work that is done should correspond to a milestone, for more information on process and planning check out the [process document](./PROCESS.md).
-
-## Stability policy
-
-An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners.
