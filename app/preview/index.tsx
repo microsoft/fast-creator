@@ -4,10 +4,20 @@ import {
     fastToolingHTMLRenderLayerInlineEdit,
     fastToolingHTMLRenderLayerNavigation,
     MessageSystem,
+    Shortcuts,
+    ShortcutsActionDelete,
+    ShortcutsActionDuplicate,
+    ShortcutsActionRedo,
+    ShortcutsActionUndo,
 } from "@microsoft/fast-tooling";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { fastToolingPreview } from "./web-components/preview/";
 import { Preview } from "./web-components/preview/preview";
+
+/**
+ * Get the root div element
+ */
+const root = document.getElementById("root");
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
@@ -40,3 +50,17 @@ const fastMessageSystem = new MessageSystem({
  */
 const previewWebComponent = document.querySelector("fast-tooling-preview") as Preview;
 previewWebComponent.messageSystem = fastMessageSystem;
+
+/**
+ * Setup the Shortcuts
+ */
+new Shortcuts({
+    messageSystem: fastMessageSystem,
+    target: root as HTMLElement,
+    actions: [
+        ShortcutsActionDelete(fastMessageSystem),
+        ShortcutsActionDuplicate(fastMessageSystem),
+        ShortcutsActionRedo(fastMessageSystem),
+        ShortcutsActionUndo(fastMessageSystem),
+    ],
+});
