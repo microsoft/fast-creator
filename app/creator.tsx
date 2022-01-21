@@ -20,6 +20,11 @@ import {
     MonacoAdapterActionCallbackConfig,
     monacoAdapterId,
     SchemaDictionary,
+    Shortcuts,
+    ShortcutsActionDelete,
+    ShortcutsActionDuplicate,
+    ShortcutsActionRedo,
+    ShortcutsActionUndo,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
@@ -122,6 +127,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
     private firstRun: boolean = true;
     private positionUpdateTimeout: XOR<number, NodeJS.Timer>;
 
+    public rootContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     public editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private windowResizing: number;
@@ -267,7 +273,7 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
         ].data as any)["direction"];
 
         return (
-            <div>
+            <div ref={this.rootContainerRef}>
                 <WhatsNewDialog
                     userToolingVersion={this.state.userToolingVersion}
                     userToolingReactVersion={this.state.userToolingReactVersion}
@@ -708,6 +714,20 @@ class Creator extends CreatorUtilities<{}, CreatorState> {
     public componentDidMount(): void {
         this.setViewerToFullSize();
         this.updateMonacoEditor();
+
+        /**
+         * Setup the Shortcuts
+         */
+        new Shortcuts({
+            messageSystem: this.fastMessageSystem,
+            target: this.rootContainerRef.current as HTMLDivElement,
+            actions: [
+                ShortcutsActionDelete(this.fastMessageSystem),
+                ShortcutsActionDuplicate(this.fastMessageSystem),
+                ShortcutsActionRedo(this.fastMessageSystem),
+                ShortcutsActionUndo(this.fastMessageSystem),
+            ],
+        });
     }
 
     private updateMonacoEditor = (): void => {
