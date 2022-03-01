@@ -31,7 +31,7 @@ There are two main planning cadences, a short term weekly planning cadence (simi
     - The milestone description in the fast-creator repository should include the milestone version e.g. "alpha".
 - Identify and place all new ideas and features into the milestone
     - A milestone does not need to include a major change, but should include a set of features and bugs in a coherent grouping or based on priority.
-- When all issues placed in a milestone are resolved, the `stage` branch should be merged to the `main` branch.
+- When all issues placed in a milestone are resolved, the `stage` branch should be merged to the `main` branch. This requires a user to locally have both an up-to-date `stage` and `main` branch locally, rebase `main` with `stage` and force push. The current owner of this operation is @janechu. GitHubs pull request rebase and merge option should not be used as this updates all commit hashes contained in the pull request, rendering the `stage` and `main` branch out of sync.
     - This should result in a publish to production.
     - The changelog for new milestones should be generated via beachball.
         - This is integrated as part of the app as a "what's new in this version" pop up.
