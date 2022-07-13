@@ -73,7 +73,7 @@
     "webpack-merge": "^4.2.2",
     "workbox-webpack-plugin": "^3.6.3",
     "worker-loader": "^2.0.0",
-    "workspace-tools": "^0.17.0"
+    "workspace-tools": "^0.18.4"
   },
   "dependencies": {
     "@fluentui/web-components": "^1.2.3",
